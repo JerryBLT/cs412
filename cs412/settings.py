@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-f=(12lfm$-2_69(kt6^atdgn8y=@*a$r5t7g!*z6pz4%w7c@#7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cs-webapps.bu.edu', '127.0.0.1','localhost']
+ALLOWED_HOSTS = ['cs-webapps.bu.edu','*']
 
 
 # Application definition
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    'hw', #NEW
+    'quotes',
+] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,6 +61,7 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            "string_if_invalid": "WARNING: {{%s}} not a valid context variable.",
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',

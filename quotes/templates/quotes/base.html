@@ -1,0 +1,34 @@
+<!-- 
+File: base.html
+Author: Jerry Teixeira (jerrybt@bu.edu),01/25/2026
+Description: The base.html template provides a common structure.
+-->
+
+{% load static %}
+<html>
+<head>
+    <link rel = "stylesheet" href="{% static 'styles.css' %}">
+    <title>Quotes from Christiano Ronaldo</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href = "{% url 'quote' %}">Quote of the Day</a></li>
+            <li><a href ="{% url 'show_all' %}">Show All</a></li>
+            <li><a href ="{% url 'about' %}">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <hr/>
+        <h1>Quotes from Christiano Ronaldo</h1>
+        
+        <!-- for other templates to inherit this base template -->
+        {% block content %}
+
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; Jerry Teixera, jerrybt@bu.edu</p>
+    </footer>
+</body>
+</html>

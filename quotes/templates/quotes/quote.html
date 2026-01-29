@@ -1,0 +1,16 @@
+<!-- quotes/quote.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 01/29/2026 -->
+<!-- Description: Template for displaying a random quote and image of Christiano Ronaldo. -->
+ 
+{% extends "quotes/base.html" %}
+
+{% block title %}Random Quote{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <img class="portrait" src="{{ image }}" alt="Portrait">
+    <blockquote class="quote">
+      “{{ quote }}”
+    </blockquote>
+  </section>
+{% endblock %}

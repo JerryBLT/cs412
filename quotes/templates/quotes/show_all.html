@@ -1,0 +1,21 @@
+<!-- File: quotes/templates/quotes/show_all.html -->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 01/29/2026-->
+<!--Description: Template for displaying all quotes and images from Christiano Ronaldo.-->
+
+<!-- The for loop below iterates over the 'quotes' and 'images' context variables passed from the view to display all quotes and images. -->
+{% extends "quotes/base.html" %}
+
+{% block content %}
+
+    <strong>All Quotes and Images from Christiano Ronaldo</strong>
+    
+    {% for quote in quotes %} 
+        <p class="quote">"{{quote}}"</p>
+    {% endfor %}
+
+    <div>
+        {% for img in images %} 
+            <img src="{{img}}" width="100%" height="auto"/>
+        {% endfor %}
+    </div>
+{% endblock %}
