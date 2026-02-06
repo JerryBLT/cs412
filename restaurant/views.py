@@ -1,6 +1,8 @@
-from django.shortcuts import render
-
+# file: restaurant/views.py
+# Author: Jerry Teixeira, jerrybt@bu.edu, 02/06/2026
+# description: Views for the restaurant app, including main page, order page, and confirmation page.
 # Create your views here.
+from django.shortcuts import render
 import random
 from django.utils import timezone
 from datetime import timedelta
