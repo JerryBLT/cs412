@@ -1,0 +1,65 @@
+<!--file: restaurant/templates/restaurant/confirmation.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 01/31/2026-->
+<!--Discription: Confirmation page for the restaurant app-->
+
+{% extends "restaurant/base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>Order Confirmation</h2>
+
+  <!-- If there was an error, show it. Otherwise show the order details -->
+  {% if error %}
+    <p class="error">{{ error }}</p>
+    <div class="actions">
+      <a class="button" href="{% url 'order' %}">Back to Order</a>
+    </div>
+  {% else %}
+
+    <!-- Show the estimated ready time and total minutes -->
+    <p><strong>Order will be ready at:</strong> {{ ready_time|date:"g:i A" }} (about {{ minutes }} minutes)</p>
+
+    <!--show the ordered items and their prices -->
+    <h3>Items Ordered</h3>
+    {% if ordered_items %}
+      <ul class="list">
+        {% for item in ordered_items %}
+          <li>
+            <div class="row">
+              <span><strong>{{ item.name }}</strong>
+                {% if item.details %}<span class="muted"> — {{ item.details }}</span>{% endif %}
+              </span>
+              <span>${{ item.price }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <p class="total"><strong>Total:</strong> ${{ total }}</p>
+      
+      {% else %}
+      <p class="error">No items were selected.</p>
+    {% endif %}
+
+    <!-- Show the customer info -->
+    <h3>Customer Info</h3>
+    <ul class="list">
+      <li><strong>Name:</strong> {{ customer.name }}</li>
+      <li><strong>Phone:</strong> {{ customer.phone }}</li>
+      <li><strong>Email:</strong> {{ customer.email }}</li>
+    </ul>
+
+    <!-- Show any special instructions -->
+    {% if instructions %}
+      <h3>Special Instructions</h3>
+      <p class="muted">{{ instructions }}</p>
+    {% endif %}
+
+    <!-- Show the action buttons (main or back to order page) -->
+    <div class="actions">
+      <a class="button" href="{% url 'order' %}">Place Another Order</a>
+      <a class="button secondary" href="{% url 'main' %}">Back to Main</a>
+    </div>
+
+  {% endif %}
+</section>
+{% endblock %}

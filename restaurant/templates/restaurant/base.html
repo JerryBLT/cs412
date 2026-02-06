@@ -1,0 +1,48 @@
+<!--file: restaurant/templates/restaurant/base.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 01/31/2026-->
+<!--Discription: Base template for the restaurant app-->
+
+{% load static %}
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>krusty krab</title>
+    <link rel="stylesheet" href="{% static 'restaurants.css' %}">
+  </head>
+
+  <body>
+
+    <!--Site Header-->
+    <header class="site-header">
+
+      <div class="container header-row">
+        <div>
+          <h1 class="brand">krusty krab</h1>
+          <p class="tagline">Fast • Fresh • Made to order</p>
+        </div>
+
+        <nav class="nav">
+          <a href="{% url 'main' %}">Main Page</a>
+          <a href="{% url 'order' %}">Order Page</a>
+        </nav>
+      </div>
+
+    </header>
+
+    <!-- Main content block -->
+    <main class="container">
+      {% block content %}
+      
+      {% endblock %}
+    </main>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; Jerry Teixera, jerrybt@bu.edu</p>
+      </div>
+    </footer>
+
+
+  </body>
+</html>

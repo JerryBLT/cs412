@@ -1,0 +1,106 @@
+<!--file: restaurant/templates/restaurant/order.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 01/31/2026-->
+<!--Discription: Order page template for the restaurant app-->
+
+{% extends "restaurant/base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>Place an Order</h2>
+  <p>Select items below, add options, and enter your contact info.</p>
+
+  <form action="{% url 'confirmation' %}" method="POST" class="form">
+    {% csrf_token %}
+
+    <h3>Menu</h3>
+
+    <!-- 4 menu items and their prices -->
+    <div class="menu-item">
+      <label>
+        <input type="checkbox" name="burger">
+        <strong>Classic Burger</strong> - $9.99
+      </label>
+    </div>
+
+    <div class="menu-item">
+      <label>
+        <input type="checkbox" name="salad">
+        <strong>Garden Salad</strong> - $7.49
+      </label>
+    </div>
+
+    <div class="menu-item">
+      <label>
+        <input type="checkbox" name="tacos">
+        <strong>Street Tacos (3)</strong> - $10.49
+      </label>
+    </div>
+
+    <!-- one should have some options (e.g., toppings on a pizza, extras) -->
+    <div class="menu-item">
+      <label>
+        <input type="checkbox" name="pizza">
+        <strong>Build-Your-Own Pizza</strong> - $11.99
+      </label>
+
+      <div class="options">
+        <p class="muted">Pizza options (choose any):</p>
+        <label><input type="checkbox" name="pizza_extra_cheese"> Extra cheese</label>
+        <div class="toppings">
+          <label><input type="checkbox" name="pizza_toppings" value="pepperoni"> Pepperoni</label>
+          <label><input type="checkbox" name="pizza_toppings" value="mushrooms"> Mushrooms</label>
+          <label><input type="checkbox" name="pizza_toppings" value="olives"> Olives</label>
+          <label><input type="checkbox" name="pizza_toppings" value="onions"> Onions</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- “Daily Specials” -->
+    <h3>Daily Special</h3>
+    <div class="menu-item special">
+      <label>
+        <input type="checkbox" name="special">
+        <strong>{{ daily_special.name }}</strong> - ${{ daily_special.price }}
+      </label>
+      <p class="muted">{{ daily_special.description }}</p>
+    </div>
+
+    <!-- Hidden inputs so confirmation can read the special name/price -->
+    <input type="hidden" name="special_name" value="{{ daily_special.name }}">
+    <input type="hidden" name="special_price" value="{{ daily_special.price }}">
+
+    <hr class="divider">
+
+    <!-- space to include special instructions -->
+    <h3>Special Instructions</h3>
+    <textarea name="instructions" rows="4" placeholder="Allergies, substitutions, pickup notes..."></textarea>
+
+    <hr class="divider">
+
+    <!-- fields to collect customer information (name, phone, email) -->
+    <h3>Customer Info</h3>
+    <div class="grid">
+      <div>
+        <label>Name</label>
+        <input type="text" name="customer_name" required>
+      </div>
+      <div>
+        <label>Phone</label>
+        <input type="tel" name="customer_phone" required>
+      </div>
+      <div class="full">
+        <label>Email</label>
+        <input type="email" name="customer_email" required>
+      </div>
+    </div>
+
+    <!--Submit to place order button-->
+    <div class="actions">
+      <button class="button" type="submit">Place Order</button>
+    </div>
+
+  </form>
+</section>
+{% endblock %}
