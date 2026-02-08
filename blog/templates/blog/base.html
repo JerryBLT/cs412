@@ -1,0 +1,31 @@
+<!--file: base.html-->
+
+{% load static %}
+
+<html>
+    <head>
+        <title>My Blog</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles-blog.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1>My Blog</h1>
+            <nav>
+                <li>
+                    <a href="{% url 'show_all' %}">All Articles</a>
+                </li>
+                <li>
+                    <a href="{% url 'random' %}">Random Article</a>
+                </li>
+                
+            </nav>
+        </header>
+        {% block content %}
+        {% endblock %}
+    </body>
+
+    <footer>
+        <p>&copy; Jerry Teixera jerrybt@bu.edu</p>
+    </footer>
+
+</html>

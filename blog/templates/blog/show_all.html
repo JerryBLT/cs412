@@ -1,0 +1,34 @@
+<!--file: show_all.html-->
+
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <h1> 
+        All Articles
+    </h1>
+
+    <!--this display the queryset of all articles-->
+    <!-- {{articles}} -->
+
+    <main class="grid-container">
+        <!--Screplit code for all loop-->
+        {% for article in articles %}
+        <article>
+            
+            <div>
+                <h2>{{article.title}}</h2>
+                <strong>by {{article.author}} at {{article.published}}</strong>
+                <p>
+                    {{article.text}}
+                </p>
+            </div>
+            
+            <!--Create a link to show this one article only-->
+            <a href="{% url 'article' article.pk %}">
+                <img src="{{article.image_url}}" alt="{{article.image_url}}">
+            </a>
+        </article>
+        <hr> <!--this is a horizontal line to separate each article-->
+        {% endfor %}
+    </main>
+{% endblock %}

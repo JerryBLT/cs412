@@ -1,0 +1,27 @@
+<!--file: article.html-->
+
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <h1> {{article.title}} </h1>
+
+    <!--this display the queryset of all articles-->
+    <!-- {{articles}} -->
+
+    <main class="grid-container">
+
+        <article>
+            
+            <div>
+                <h2>{{article.title}}</h2>
+                <strong>by {{article.author}} at {{article.published}}</strong>
+                <p>
+                    {{article.text}}
+                </p>
+            </div>
+
+            <img src="{{article.image_url}}" alt="{{article.image_url}}">
+
+        </article>
+    </main>
+{% endblock %}
