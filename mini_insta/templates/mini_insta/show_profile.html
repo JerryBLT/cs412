@@ -1,0 +1,37 @@
+<!--file: mini_insta/templates/mini_insta/show_profile.html -->
+<!-- Author: Jerry Teixeira jerrybt@bu.edu, 02/12/2026 -->
+<!-- Description: Template to show a single user profile in the mini_insta app -->
+
+<!-- File: mini_insta/templates/mini_insta/show_profile.html -->
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+  <main>
+    <img class="avatar" src="{{ profile.profile_image_url }}" alt="{{ profile.username }} profile photo" />
+
+    <!-- the identity -->
+    <div class="identity">
+      <span class="username">{{ profile.username }}</span>
+    </div>
+
+    <p class="display-name">{{ profile.display_name }}</p>
+
+    <!-- the stats -->
+    <div class="stats">
+      <div class="stat"><strong>TBD </strong>posts</div>
+      <div class="stat"><strong>TBD </strong>followers</div>
+      <div class="stat"><strong>TBD </strong>following</div>
+    </div>
+
+    <!-- the bio and join date -->
+    <p class="bio">{{ profile.bio_text }}</p>
+    <div class="joined">
+      <span>Joined {{ profile.join_date }}</span>
+    </div>
+
+
+    <!-- the posts section -->
+    <h2>Posts</h2>
+    <p>No posts yet</p>
+  </main>
+{% endblock %}
