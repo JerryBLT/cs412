@@ -12,12 +12,14 @@
             <h1>My Blog</h1>
             <nav>
                 <li>
-                    <a href="{% url 'show_all' %}">All Articles</a>
+                    <a href="{% url 'show_all' %}">Show All</a>
                 </li>
                 <li>
-                    <a href="{% url 'random' %}">Random Article</a>
+                    <a href="{% url 'random' %}">Random</a>
                 </li>
-                
+                <li>
+                    <a href="{% url 'create_article' %}">Create</a>
+                </li>
             </nav>
         </header>
         {% block content %}

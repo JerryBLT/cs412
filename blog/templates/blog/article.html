@@ -10,8 +10,8 @@
 
     <main class="grid-container">
 
-        <article>
-            
+        <article class="featured">
+            <img src="{{article.image_url}}" alt="{{article.image_url}}">
             <div>
                 <h2>{{article.title}}</h2>
                 <strong>by {{article.author}} at {{article.published}}</strong>
@@ -20,8 +20,19 @@
                 </p>
             </div>
 
-            <img src="{{article.image_url}}" alt="{{article.image_url}}">
-
+            <!--Display the comments about this article-->
+            <div class="comments">
+                <h3>Comments:</h3>
+                <h3>
+                    <a href="{% url 'create_comment' article.pk %}">Add a comment</a>
+                </h3>
+                {% for comment in article.get_all_comments %}
+                    <div class="comment">
+                        <p>{{ comment.text }}</p>
+                        <p><em>by {{ comment.author }} at {{ comment.published }}</em></p>
+                    </div>
+                {% endfor %}
+            </div>
         </article>
     </main>
 {% endblock %}
