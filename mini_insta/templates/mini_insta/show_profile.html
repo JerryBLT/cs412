@@ -32,6 +32,36 @@
 
     <!-- the posts section -->
     <h2>Posts</h2>
-    <p>No posts yet</p>
+    <div class="posts-grid">
+
+      <!--Link to the post detail page for each post in the profile's posts list-->
+      {% for post in profile.get_all_posts %}
+        <a href="{% url 'show_post' post.pk %}">
+
+          {% with first_photo=post.get_all_photos.first %}
+            {% if first_photo %}
+              <img
+                  src="{{ first_photo.image_url }}"
+                  alt="Post image" />
+            {% else %}
+              <div>No photo</div>
+            {% endif %}
+          {% endwith %}
+
+        </a>
+      <!-- Caption + timestamp -->
+      <div>
+        <p>{{ post.timestamp }}</p>
+        {% if post.caption %}
+          <p>{{ post.caption }}</p>
+        {% endif %}
+      </div>
+
+    </div>
+
+    {% empty %}
+      <p>This user has no posts yet.</p>
+    {% endfor %}
+    
   </main>
 {% endblock %}

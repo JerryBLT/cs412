@@ -1,0 +1,25 @@
+<!--File: mini_insta/templates/mini_insta/show_post.html-->
+<!-- Author: Jerry Teixeira jerrybt@bu.edu, 02/14/2026 -->
+<!-- Description: Template to show a single post in the mini_insta app -->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+  <h2>Post</h2>
+
+  <p><strong>Created:</strong> {{ post.timestamp }}</p>
+  {% if post.caption %}
+    <p><strong>Caption:</strong> {{ post.caption }}</p>
+  {% endif %}
+
+  <h3>Photos</h3>
+  <div>
+    {% for photo in post.get_all_photos %}
+      <div>
+        <img src="{{ photo.image_url }}" alt="photo" >
+      </div>
+    {% empty %}
+      <p>No photos for this post.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
