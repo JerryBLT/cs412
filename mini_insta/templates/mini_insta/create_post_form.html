@@ -1,0 +1,29 @@
+<!--File: mini_insta/create_post_form.html-->
+<!--Author: Jerry Teixeira jerrybt@bu.edu, 02/19/2026-->
+<!--Discription: Template to create a post in the mini web-->
+
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<main>
+  <h2>Create a Post for {{ profile.username }}</h2>
+
+  <form action="{% url 'create_post' profile.pk %}" method="POST" >
+    {% csrf_token %}
+    <div>
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <div>
+            <label for="photo_url">Photo URL</label>
+            <input type="url" name="photo_url" id="photo_url" placeholder="https://example.com/image.jpg">
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit">Create post</button>
+        <a href="{% url 'show_profile' profile.pk %}">Cancel</a>
+    </div>
+  </form>
+</main>
+{% endblock %}

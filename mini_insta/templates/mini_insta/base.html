@@ -15,6 +15,11 @@
       <nav>
         <ul>
           <li><a href="{% url 'show_all_profiles' %}">Home</a></li>
+          <li>
+            {% if profile %}
+              <a href="{% url 'create_post' profile.pk %}">Create Post</a>
+            {% endif %}
+          </li>
         </ul>
       </nav>
     </header>

@@ -31,7 +31,10 @@
 
 
     <!-- the posts section -->
-    <h2>Posts</h2>
+    <h2>
+      Posts
+      <a href="{% url 'create_post' profile.pk %}">+ New Post</a>
+    </h2>
     <div class="posts-grid">
 
       <!--Link to the post detail page for each post in the profile's posts list-->
