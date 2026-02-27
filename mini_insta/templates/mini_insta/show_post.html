@@ -5,21 +5,37 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-  <h2>Post</h2>
+  <article class="post-card">
 
-  <p><strong>Created:</strong> {{ post.timestamp }}</p>
-  {% if post.caption %}
-    <p><strong>Caption:</strong> {{ post.caption }}</p>
-  {% endif %}
+    <!--Include the post caption & timestamp-->
+    <div class="post-meta">
+      <span class="timestamp">{{ post.timestamp}}</span>
+      {% if post.caption %}
+        <p class="post-caption">{{ post.caption }}</p>
+      {% endif %}
+    </div>
 
-  <h3>Photos</h3>
-  <div>
-    {% for photo in post.get_all_photos %}
-      <div>
-        <img src="{{ photo.image_url }}" alt="photo" >
-      </div>
-    {% empty %}
-      <p>No photos for this post.</p>
-    {% endfor %}
-  </div>
+    <!--Checking for the photo to display-->
+    <section class="post-photos">
+      {% if post.get_all_photos %}
+        <div class="photos-grid">
+          {% for photo in post.get_all_photos %}
+            <div class="photo-container">
+              <img src="{{ photo.image_url }}" alt="Post photo">
+            </div>
+          {% endfor %}
+        </div>
+      <!--If there is no photos on the post-->
+      {% else %}
+        <div class="empty-state">
+          <p>No photos for this post.</p>
+        </div>
+      {% endif %}
+    </section>
+
+    <!--Button to go back to the profile page-->
+    <div class="post-actions">
+      <a href="{% url 'show_profile' post.profile.pk %}" class="btn btn-ghost">Back to Profile</a>
+    </div>
+  </article>
 {% endblock %}

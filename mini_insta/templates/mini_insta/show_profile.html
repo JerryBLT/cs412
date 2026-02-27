@@ -1,70 +1,83 @@
-<!--file: mini_insta/templates/mini_insta/show_profile.html -->
+<!-- File: mini_insta/templates/mini_insta/show_profile.html -->
 <!-- Author: Jerry Teixeira jerrybt@bu.edu, 02/12/2026 -->
 <!-- Description: Template to show a single user profile in the mini_insta app -->
 
-<!-- File: mini_insta/templates/mini_insta/show_profile.html -->
 {% extends "mini_insta/base.html" %}
 
 {% block content %}
-  <main>
-    <img class="avatar" src="{{ profile.profile_image_url }}" alt="{{ profile.username }} profile photo" />
+<article class="profile-detail">
+  
+  <!-- Profile header -->
+  <div class="profile-header">
+    <!--The profile picture-->
+    <div class="profile-avatar">
+      <img class="avatar"  src="{{ profile.profile_image_url }}"  alt="{{ profile.display_name }} profile photo">
+    </div>
+    
+    <!--Profile information (username, name, post count...)-->
+    <div class="profile-info">
+      
+      <div class="identity">
+        <h1 class="display-name">{{ profile.display_name }}</h1>
+        <span class="username">@{{ profile.username }}</span>
+      </div>
+      
+      <div class="stats">
 
-    <!-- the identity -->
-    <div class="identity">
-      <span class="username">{{ profile.username }}</span>
+        <div class="stat">
+          <strong>{{ profile.get_all_posts|length }}</strong>
+          posts
+        </div>
+        <div class="stat">
+          <strong>TBD</strong>
+          followers
+        </div>
+        <div class="stat">
+          <strong>TBD</strong>
+          following
+        </div>
+
+      </div>
+      
+      {% if profile.bio_text %}
+        <p class="bio">{{ profile.bio_text }}</p>
+      {% endif %}
+      
+      <div class="joined">
+        <span>Joined {{ profile.join_date }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts section -->
+  <section class="posts-section">
+    <div class="section-header">
+      <h2>Posts</h2>
+        <a href="{% url 'create_post' profile.pk %}" class="btn btn-primary">+ New Post</a>
     </div>
 
-    <p class="display-name">{{ profile.display_name }}</p>
-
-    <!-- the stats -->
-    <div class="stats">
-      <div class="stat"><strong>TBD </strong>posts</div>
-      <div class="stat"><strong>TBD </strong>followers</div>
-      <div class="stat"><strong>TBD </strong>following</div>
-    </div>
-
-    <!-- the bio and join date -->
-    <p class="bio">{{ profile.bio_text }}</p>
-    <div class="joined">
-      <span>Joined {{ profile.join_date }}</span>
-    </div>
-
-
-    <!-- the posts section -->
-    <h2>
-      Posts
-      <a href="{% url 'create_post' profile.pk %}">+ New Post</a>
-    </h2>
-    <div class="posts-grid">
-
-      <!--Link to the post detail page for each post in the profile's posts list-->
-      {% for post in profile.get_all_posts %}
-        <a href="{% url 'show_post' post.pk %}">
-
-          {% with first_photo=post.get_all_photos.first %}
-            {% if first_photo %}
-              <img
-                  src="{{ first_photo.image_url }}"
-                  alt="Post image" />
-            {% else %}
-              <div>No photo</div>
-            {% endif %}
-          {% endwith %}
-
-        </a>
-      <!-- Caption + timestamp -->
-      <div>
-        <p>{{ post.timestamp }}</p>
-        {% if post.caption %}
-          <p>{{ post.caption }}</p>
-        {% endif %}
+    <!--Check if the profile has post and show it-->
+    {% if profile.get_all_posts %}
+      <div class="posts-grid">
+        {% for post in profile.get_all_posts %}
+          <a href="{% url 'show_post' post.pk %}" class="post-preview">
+            {% with first_photo=post.get_all_photos.first %}
+              {% if first_photo %}
+                <img src="{{ first_photo.image_url }}" alt="Post preview">
+              {% else %}
+                <div class="no-image">No photo</div>
+              {% endif %}
+            {% endwith %}
+          </a>
+        {% endfor %}
       </div>
 
-    </div>
-
-    {% empty %}
-      <p>This user has no posts yet.</p>
-    {% endfor %}
-    
-  </main>
+    <!--If the user has no post yet-->
+    {% else %}
+      <div class="empty-state">
+        <p>This user has no posts yet.</p>
+      </div>
+    {% endif %}
+  </section>
+</article>
 {% endblock %}

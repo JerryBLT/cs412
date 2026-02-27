@@ -12,18 +12,17 @@
   <!--this display the queryset of all profiles-->
   <!-- {{profiles}} -->
 
-  <main class="grid-container">
+  <article class="grid-container">
     {% for profile in profiles %}
-    <article>
-      <div>
-        <h2>{{ profile.display_name }}</h2>
-        <p>@{{ profile.username }}</p>
-      </div>
-
-      <a href="{% url 'show_profile' profile.pk %}">
-        <img src="{{ profile.profile_image_url }}" alt="{{ profile.username }} profile image"/>
+      <a href="{% url 'show_profile' profile.pk %}" class="profile-card">
+        <article>
+          <img class="avatar" src="{{ profile.profile_image_url }}" alt="{{ profile.username }} profile image">
+          <div class="profile-info">
+            <h3>{{ profile.display_name }}</h3>
+            <p class="username">@{{ profile.username }}</p>
+          </div>
+        </article>
       </a>
-    </article>
     {% endfor %}
-  </main>
+  </article>
 {% endblock %}

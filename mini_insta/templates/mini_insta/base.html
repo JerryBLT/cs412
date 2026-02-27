@@ -12,6 +12,7 @@
     <header>
       <h1>Mini Insta</h1>
       
+      <!-- The navigation link for going to home screen and creating a post if in the profile page-->
       <nav>
         <ul>
           <li><a href="{% url 'show_all_profiles' %}">Home</a></li>
@@ -24,16 +25,17 @@
       </nav>
     </header>
 
-
+    <!--Main-->
+    <main>
       {% block content %}
       {% endblock %}
+    </main>
 
-
+    <!--Footer -->
     <footer>
       <hr>
       <p><a href="{% url 'show_all_profiles' %}">Home</a></p>
-      <p>&copy; Jerry Teixeira, jerrybt@bu.edu</p>
+      <p>&copy; Jerry Teixeira, <a href="mailto:jerrybt@bu.edu">jerrybt@bu.edu</a></p>
     </footer>
- 
-    </body>
+  </body>
 </html>
