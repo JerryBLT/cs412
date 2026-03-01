@@ -123,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
 
 
 # Static/Media config
@@ -145,6 +145,6 @@ if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     MEDIA_URL = '/jerrybt/media/'
 
 
-# declarations to reference media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = "media/"
+# # declarations to reference media files
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_URL = "media/"
