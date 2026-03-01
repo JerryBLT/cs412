@@ -1,0 +1,25 @@
+<!-- File: mini_insta/templates/mini_insta/show_following.html -->
+<!-- Displays the profiles this Profile is following -->
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<article class="form-card">
+  <h1 class="page-title">{{ profile.display_name }} is following</h1>
+  <p class="page-lead">Profiles @{{ profile.username }} is subscribed to</p>
+
+    <!-- Cards for each followed profile. -->
+  <div class="card-grid">
+    {% for followed in profile.get_following %}
+    <a href="{% url 'show_profile' followed.pk %}">
+      <div class="card-body">
+        <h2>{{ followed.display_name }}</h2>
+      </div>
+    </a>
+    {% empty %}
+    <p class="empty-state">Not following anyone yet.</p>
+    {% endfor %}
+  </div>
+
+  <p><a href="{% url 'show_profile' profile.pk %}" class="btn btn-ghost">Back to profile</a></p>
+</article>
+{% endblock %}

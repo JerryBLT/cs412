@@ -103,3 +103,18 @@ class UpdatePostView(UpdateView):
         """Return to the profile page after deleting a post."""
         return self.object.profile.get_absolute_url()
 
+
+class ShowFollowersDetailView(DetailView):
+    '''Display the followers for a Profile.'''
+
+    model = Profile
+    template_name = "mini_insta/show_followers.html"
+    context_object_name = "profile"
+
+
+class ShowFollowingDetailView(DetailView):
+    '''Display the profiles this Profile is following.'''
+
+    model = Profile
+    template_name = "mini_insta/show_following.html"
+    context_object_name = "profile"

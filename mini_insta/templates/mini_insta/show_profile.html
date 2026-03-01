@@ -32,12 +32,20 @@
         </div>
 
         <div class="stat">
-          <strong>TBD</strong>
+          <strong>
+            <a href="{% url 'show_followers' profile.pk %}">
+              {{ profile.get_num_followers }}
+            </a>
+          </strong>
           followers
         </div>
 
         <div class="stat">
-          <strong>TBD</strong>
+          <strong>
+            <a href="{% url 'show_following' profile.pk %}">
+              {{ profile.get_num_following }}
+            </a>
+          </strong>
           following
         </div>
       </div>

@@ -9,6 +9,11 @@
 
     <!--Include the post caption & timestamp-->
     <div class="post-meta">
+      {% with likes=post.get_likes %}
+        <div class="likes">
+          <strong>{{ likes|length }}</strong> like{{ likes|length|pluralize }}
+        </div>
+      {% endwith %}
       <span class="timestamp">{{ post.timestamp}}</span>
       {% if post.caption %}
         <p class="post-caption">{{ post.caption }}</p>
@@ -31,6 +36,26 @@
           <p>No photos for this post.</p>
         </div>
       {% endif %}
+    </section>
+
+    <!-- Comments section -->
+    <section class="post-comments">
+      <h3>Comments</h3>
+      {% with comments=post.get_all_comments %}
+        {% if comments %}
+          <ul>
+            {% for comment in comments %}
+              <li>
+                <strong>@{{ comment.profile.username }}</strong>
+                <span class="timestamp">{{ comment.timestamp }}</span>
+                <p>{{ comment.text }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No comments yet.</p>
+        {% endif %}
+      {% endwith %}
     </section>
 
     <!--Button to go back to the profile page-->
