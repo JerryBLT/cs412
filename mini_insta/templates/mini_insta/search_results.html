@@ -1,0 +1,99 @@
+<!-- File: mini_insta/search_results.html -->
+<!-- Author: Jerry Teixiera (jerrbt@bu.edu), 03/01/26-->
+<!-- Discription: Template for search results -->
+
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<section class="form-card">
+  <!-- Search Results displayed-->
+  <h2>Search Results</h2>
+  <p class="field-hint">Query: "{{ query }}"</p>
+  <!-- Buttons to bring you back to search.html & back to profile page-->
+  <div class="form-actions">
+    <a class="btn btn-ghost" href="{% url 'search' profile.pk %}">New search</a>
+    <a class="btn btn-ghost" href="{% url 'show_profile' profile.pk %}">Back to profile</a>
+  </div>
+</section>
+
+<!-- Search results profile displayed -->
+<section class="form-card">
+  <h3>Profiles</h3>
+    {% for p in profiles %}
+    <ul>
+      <li>
+        <a href="{% url 'show_profile' p.pk %}">{{ p.display_name }} (@{{ p.username }})</a>
+      </li>
+    </ul>
+      <!-- If no profiles matches the query -->
+      {% empty %}
+      <p>No profiles matched!</p>
+    {% endfor %}
+</section>
+
+<!-- Search results post displayed-->
+<section class="posts-feed">
+  <h3>Posts</h3>
+  {% for post in posts %}
+    <article class="post-card">
+      <!-- The post user info -->
+      <div class="profile-info">
+        <div class="author-avatar">
+          <img class="avatar" src="{{ post.profile.profile_image_url }}" alt="{{ post.profile.display_name }} profile photo">
+        </div>
+        <a href="{% url 'show_profile' post.profile.pk %}">{{ post.profile.display_name }}</a>
+        <span class="username">@{{ post.profile.username }}</span>
+        <span class="timestamp">{{ post.timestamp }}</span>
+      </div>
+
+      {% with first_photo=post.get_all_photos.first %}
+        {% if first_photo %}
+          <!-- The post photo-->
+          <div class="post-photo">
+            <img src="{{ first_photo.get_image_url }}" alt="Post photo">
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <!-- The post caption-->
+      {% if post.caption %}
+        <p class="post-caption">{{ post.caption }}</p>
+      {% endif %}
+
+      <!-- The post likes count-->
+      <div class="post-meta">
+        {% with likes=post.get_likes %}
+          <span class="likes">❤ {{ likes|length }} like{{ likes|length|pluralize }}</span>
+        {% endwith %}
+      </div>
+
+      <!-- The post comments -->
+      <section class="post-comments">
+        <h4>Comments</h4>
+        {% with comments=post.get_all_comments %}
+          {% if comments %}
+            <ul>
+              {% for comment in comments %}
+                <li>
+                  <strong>@{{ comment.profile.username }}</strong>
+                  <span class="timestamp">{{ comment.timestamp }}</span>
+                  <p>{{ comment.text }}</p>
+                </li>
+              {% endfor %}
+            </ul>
+          <!-- if there is no comments in the post-->
+          {% else %}
+            <p class="muted">No comments yet.</p>
+          {% endif %}
+        {% endwith %}
+      </section>
+
+    </article>
+
+    {% empty %}
+    <!-- If no post match the query-->
+    <p>No posts matched!</p>
+  {% endfor %}
+
+</section>
+{% endblock %}

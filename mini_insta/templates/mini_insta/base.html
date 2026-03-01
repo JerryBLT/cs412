@@ -13,6 +13,8 @@
       <h1>Mini Insta</h1>
       
       <!-- The navigation link for going to home screen and creating a post if in the profile page-->
+      <!-- The other navigation such as feed/profile/search are on the footer
+       I didn't replace this Home with the feed so I could navigate to the show_all_profile page.-->
       <nav>
         <ul>
           <li><a href="{% url 'show_all_profiles' %}">Home</a></li>
@@ -45,6 +47,11 @@
           <li>
             {% if profile %}
               <a href="{% url 'show_profile' profile.pk %}">Profile</a>
+            {% endif %}
+          </li>
+          <li>
+            {% if profile %}
+              <a href="{% url 'search' profile.pk %}">Search</a>
             {% endif %}
           </li>
         </ul>

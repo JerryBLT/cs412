@@ -1,0 +1,25 @@
+<!-- File: mini_insta/search.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 03/01/26-->
+<!-- Discription: Template to display the search profile & post-->
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<section class="form-card">
+  <h2>Search</h2>
+  <p class="field-hint">Search profiles and posts.</p>
+
+  <!-- The Query engine -->
+  <form action="" method="get">
+    <div class="form-group">
+      <label for="query">Query</label>
+      <textarea id="query" name="query" rows="3" placeholder="Search by name, username, bio, or caption"></textarea>
+    </div>
+
+    <!-- Buttpm to go back to the profile page -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Search</button>
+      <a class="btn btn-ghost" href="{% url 'show_profile' profile.pk %}">Back to profile</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
