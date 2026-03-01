@@ -138,11 +138,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL= "media/"  # note: no leading slash!
 
 
-# CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
+CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 
-# if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
-hostname = socket.gethostname()
-if hostname.startswith('csa') or 'cs-webapps' in hostname:
+if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/jerrybt/static/'
     MEDIA_URL = '/jerrybt/media/'
 
