@@ -36,6 +36,8 @@
     <!--Button to go back to the profile page-->
     <div class="post-actions">
       <a href="{% url 'show_profile' post.profile.pk %}" class="btn btn-ghost">Back to Profile</a>
+      <a href="{% url 'update_post' post.pk %}" class="btn btn-ghost">Update</a>
+      <a href="{% url 'delete_post' post.pk %}" class="btn btn-ghost">Delete</a>
     </div>
   </article>
 {% endblock %}

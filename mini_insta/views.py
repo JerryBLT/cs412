@@ -2,9 +2,9 @@
 # Author: Jerry Teixeira jerrybt@bu.edu, 02/12/2026
 # Discrition: View to display all user profiles in the mini_insta app.
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Profile, Photo
-from .forms import CreatePostForm, UpdateProfileForm
+from .forms import CreatePostForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 
 class ProfileListView(ListView):
@@ -74,3 +74,32 @@ class UpdateProfileView(UpdateView):
     model = Profile
     form_class = UpdateProfileForm
     template_name = 'mini_insta/update_profile_form.html'
+
+
+class DeletePostView(DeleteView):
+    '''View to delete a post in the mini_insta app.'''
+    model = Post
+    template_name = 'mini_insta/delete_post_form.html'
+
+    def get_context_data(self, **kwargs):
+        '''Add the Post and its Profile to the template context.'''
+        context = super().get_context_data(**kwargs)
+        context['profile'] = self.object.profile
+        return context
+
+    def get_success_url(self):
+        """Return to the profile page after deleting a post."""
+        return self.object.profile.get_absolute_url()
+    
+class UpdatePostView(UpdateView):
+    """Update a Post, redirect to that post's detail page after save."""
+
+    model = Post
+    form_class = UpdatePostForm
+    template_name = "mini_insta/update_post_form.html"
+    context_object_name = 'post'
+
+    def get_success_url(self):
+        """Return to the profile page after deleting a post."""
+        return self.object.profile.get_absolute_url()
+

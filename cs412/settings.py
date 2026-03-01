@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f=(12lfm$-2_69(kt6^atdgn8y=@*a$r5t7g!*z6pz4%w7c@#7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['cs-webapps.bu.edu','*']
 
@@ -143,5 +143,6 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/jerrybt/static/'
     MEDIA_URL = '/jerrybt/media/'
+
 
 

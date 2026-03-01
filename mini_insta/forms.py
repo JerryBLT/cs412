@@ -15,3 +15,11 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['display_name', 'bio_text', 'profile_image_url']
+
+class UpdatePostForm(forms.ModelForm):
+    """Form to update a Post (caption only); used by UpdatePostView."""
+
+    class Meta:
+        """Associate this form with the Post model"""
+        model = Post
+        fields = ['caption']

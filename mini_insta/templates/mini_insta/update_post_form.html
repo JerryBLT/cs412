@@ -1,0 +1,28 @@
+<!-- File: mini_insta/update_post_form.html -->
+<!-- Author: Jerry Teixeira [jerrybt@bu.edu](mailto:jerrybt@bu.edu), 03/01/2026 -->
+<!-- Description: Template to update a post caption -->
+
+
+{% extends "mini_insta/base.html" %}
+
+
+{% block content %}
+<article class="form-card">
+  <h2>Edit Post</h2>
+  <p>Updating post by <strong>{{ profile.display_name }}</strong></p>
+
+
+  <form action="{% url 'update_post' post.pk %}" method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <a href="{% url 'show_post' post.pk %}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</article>
+{% endblock %}
