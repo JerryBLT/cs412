@@ -8,7 +8,7 @@
   <h1 class="page-title">Followers of {{ profile.display_name }}</h1>
   <p class="page-lead">Profiles who follow @{{ profile.username }}</p>
 
-    <!-- for each follower. -->
+    <!-- for each follower (clickable link). -->
     <div>
         {% for follower in profile.get_followers %}
         <a href="{% url 'show_profile' follower.pk %}">
@@ -20,6 +20,8 @@
         <p class="empty-state">No followers yet.</p>
         {% endfor %}
     </div>
+
+    <!-- Button to go back to Porfile page-->
     <p><a href="{% url 'show_profile' profile.pk %}" class="btn btn-ghost">Back to profile</a></p>
 </article>
 {% endblock %}

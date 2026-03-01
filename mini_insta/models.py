@@ -50,7 +50,12 @@ class Profile(models.Model):
         # iterate through follow_instances and get the profile attribute
         following = [following.profile for following in follow_instances] 
         return following
-
+    
+    def get_post_feed(self):
+        '''Return a list of Post isntances for this profile's feed, ordered with most recent on top.'''
+        following_profiles = self.get_following()
+        posts = Post.objects.filter(profile__in=following_profiles).order_by('-timestamp')
+        return posts
  
     
 class Post(models.Model):

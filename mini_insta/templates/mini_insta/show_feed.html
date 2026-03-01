@@ -1,0 +1,89 @@
+<!-- File: mini_insta/show_feed.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 03/01/26-->
+<!-- Discription: Template for showing the feed of a post-->
+
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<article class="feed">
+  <!-- The user info / back button to the profile page-->
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <img class="avatar" src="{{ profile.profile_image_url }}" alt="{{ profile.display_name }} profile photo">
+    </div>
+    <div class="profile-info">
+      <h1>{{ profile.display_name }}'s Feed</h1>
+      <p>@{{ profile.username }} • following {{ profile.get_num_following }} profiles</p>
+      <a class="btn btn-primary" href="{% url 'show_profile' profile.pk %}">Back to profile</a>
+    </div>
+  </div>
+
+  <!-- Display the post from people followed -->
+  <div class="posts-feed">
+    {% for post in posts %}
+      <article class="post-card">
+
+        <!-- The poster info-->
+        <div>
+          <div class="author-avatar">
+            <img class="avatar" src="{{ post.profile.profile_image_url }}" alt="{{ post.profile.display_name }} profile photo">
+          </div>
+          <div class="author-meta">
+            <a href="{% url 'show_profile' post.profile.pk %}" class="author-name">{{ post.profile.display_name }}</a>
+            <span class="username">@{{ post.profile.username }}</span>
+            <span class="timestamp">{{ post.timestamp }}</span>
+          </div>
+        </div>
+
+        <!-- The poster photos -->
+        {% with first_photo=post.get_all_photos.first %}
+          {% if first_photo %}
+            <div class="post-photo">
+              <img src="{{ first_photo.get_image_url }}" alt="Post photo">
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- The poster caption-->
+        {% if post.caption %}
+          <p class="post-caption">{{ post.caption }}</p>
+        {% endif %}
+
+        <!-- The poster likes count-->
+        <div class="post-meta">
+          {% with likes=post.get_likes %}
+            <span class="likes">{{ likes|length }} like{{ likes|length|pluralize }}</span>
+          {% endwith %}
+        </div>
+
+        <!-- The poster post comments-->
+        <section class="post-comments">
+          <h4>Comments</h4>
+          {% with comments=post.get_all_comments %}
+            {% if comments %}
+              <ul>
+                {% for comment in comments %}
+                  <li>
+                    <strong>@{{ comment.profile.username }}</strong>
+                    <span class="timestamp">{{ comment.timestamp }}</span>
+                    <p>{{ comment.text }}</p>
+                  </li>
+                {% endfor %}
+              </ul>
+            <!-- if there is no comment in the post-->
+            {% else %}
+              <p class="muted">No comments yet.</p>
+            {% endif %}
+          {% endwith %}
+        </section>
+
+      </article>
+
+    {% empty %}
+    <!-- if the person you follow dosent have posts.-->
+    <p>No posts in your feed yet. Follow more profiles to see their posts.</p>
+    {% endfor %}
+  </div>
+
+</article>
+{% endblock %}

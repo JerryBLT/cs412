@@ -118,3 +118,24 @@ class ShowFollowingDetailView(DetailView):
     model = Profile
     template_name = "mini_insta/show_following.html"
     context_object_name = "profile"
+
+
+class PostFeedListView(ListView):
+    '''List the post feed for a single Profile (posts from profiles they follow).'''
+
+    model = Post
+    template_name = "mini_insta/show_feed.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        """Return the feed of Posts for the profile identified by URL pk."""
+        # Profile whose feed we are showing (pk from URL):
+        pk = self.kwargs['pk']
+        profile = Profile.objects.get(pk=pk)
+        return profile.get_post_feed()
+
+    def get_context_data(self, **kwargs):
+        """Add the profile (feed owner) to context for the template."""
+        context = super().get_context_data(**kwargs)
+        context['profile'] = Profile.objects.get(pk=self.kwargs['pk'])
+        return context
