@@ -14,31 +14,35 @@
       <img class="avatar"  src="{{ profile.profile_image_url }}"  alt="{{ profile.display_name }} profile photo">
     </div>
     
-    <!--Profile information (username, name, post count...)-->
+    <!--Profile information-->
     <div class="profile-info">
       
+      <!--Include the profile name/update abilitiy-->
       <div class="identity">
         <h1 class="display-name">{{ profile.display_name }}</h1>
         <span class="username">@{{ profile.username }}</span>
+        <a href="{% url 'update_profile' profile.pk %}" class="btn btn-primary">Update Profile</a>
       </div>
       
+      <!--The profile stats: post, following, followers count-->
       <div class="stats">
-
         <div class="stat">
           <strong>{{ profile.get_all_posts|length }}</strong>
           posts
         </div>
+
         <div class="stat">
           <strong>TBD</strong>
           followers
         </div>
+
         <div class="stat">
           <strong>TBD</strong>
           following
         </div>
-
       </div>
       
+      <!--The BIO/ date joined-->
       {% if profile.bio_text %}
         <p class="bio">{{ profile.bio_text }}</p>
       {% endif %}
@@ -46,6 +50,7 @@
       <div class="joined">
         <span>Joined {{ profile.join_date }}</span>
       </div>
+
     </div>
   </div>
 
@@ -53,7 +58,7 @@
   <section class="posts-section">
     <div class="section-header">
       <h2>Posts</h2>
-        <a href="{% url 'create_post' profile.pk %}" class="btn btn-primary">+ New Post</a>
+        <!-- <a href="{% url 'create_post' profile.pk %}" class="btn btn-primary">+ New Post</a> -->
     </div>
 
     <!--Check if the profile has post and show it-->
@@ -63,7 +68,7 @@
           <a href="{% url 'show_post' post.pk %}" class="post-preview">
             {% with first_photo=post.get_all_photos.first %}
               {% if first_photo %}
-                <img src="{{ first_photo.image_url }}" alt="Post preview">
+                <img src="{{ first_photo.get_image_url }}" alt="Post preview">
               {% else %}
                 <div class="no-image">No photo</div>
               {% endif %}

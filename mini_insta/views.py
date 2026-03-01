@@ -2,9 +2,9 @@
 # Author: Jerry Teixeira jerrybt@bu.edu, 02/12/2026
 # Discrition: View to display all user profiles in the mini_insta app.
 
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Post, Profile, Photo
-from .forms import CreatePostForm
+from .forms import CreatePostForm, UpdateProfileForm
 from django.urls import reverse
 
 class ProfileListView(ListView):
@@ -54,9 +54,13 @@ class CreatePostView(CreateView):
         # Save the Post first so we can safely attach related Photo objects
         response = super().form_valid(form)
 
-        photo_url = self.request.POST.get('photo_url', '').strip()
-        if photo_url:
-            Photo.objects.create(post=self.object, image_url=photo_url)
+        # photo_url = self.request.POST.get('photo_url', '').strip()
+        # if photo_url:
+        #     Photo.objects.create(post=self.object, image_url=photo_url)
+        
+        files = self.request.FILES.getlist('files')
+        for file in files:
+            Photo.objects.create(post=self.object, image_file=file)
 
         return response
 
@@ -64,3 +68,9 @@ class CreatePostView(CreateView):
     def get_success_url(self):
         return reverse('show_post', kwargs={'pk': self.object.pk})
     
+
+class UpdateProfileView(UpdateView):
+    '''View to update the user profile'''
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'mini_insta/update_profile_form.html'

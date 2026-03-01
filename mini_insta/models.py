@@ -1,4 +1,8 @@
+# file: mini_insta/models.py
+# author: Jerry Teixeira (jerrybt@bu.edu), 02/28/26
+# discription: Class based views for Mini Instagram pages, inherits from django generic views
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -10,7 +14,7 @@ class Profile(models.Model):
     display_name = models.TextField(blank = True)
     bio_text = models.TextField(blank = True)
     join_date = models.DateTimeField(auto_now = True)
-    profile_image_url = models.URLField(blank = True)
+    profile_image_url = models.URLField(blank = True) # url as a string
 
     def __str__(self):
         '''Return a string representation of this model instance.'''
@@ -20,6 +24,11 @@ class Profile(models.Model):
         '''Return a list of all posts associated with this profile.'''
         post = Post.objects.filter(profile = self).order_by('timestamp')
         return post
+    
+    def get_absolute_url(self):
+        '''Return the absolute URL for this profile detail page.'''
+        return reverse('show_profile', kwargs={'pk': self.pk})
+ 
     
 class Post(models.Model):
     '''A post model that represents a user's post on the platform.'''
@@ -43,9 +52,19 @@ class Photo(models.Model):
 
     # model the data attributes of an individual photo.
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    image_url = models.URLField(blank = True)
+    image_url = models.URLField(blank = True) # url as a string
+    image_file = models.ImageField(blank=True)
     timestamp = models.DateTimeField(auto_now = True)
+
+    def get_image_url(self):
+        """Return the image URL if exists, otherwise return the image file URL.
+        """
+        if self.image_url:
+            return self.image_url
+        if self.image_file:
+            return self.image_file.url
+        return ''
 
     def __str__(self):
         '''Return a string representation of this photo instance.'''
-        return f"image posted on {self.timestamp} for post by {self.post.profile.username}, image: {self.image_url}"
+        return f'image posted on {self.timestamp} by {self.post.profile.username}, image: {self.image_url if self.image_url else self.image_file}'

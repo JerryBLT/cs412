@@ -1,0 +1,28 @@
+<!--File: blog/update_profile_form.html-->
+<!--Author: Jerry Teixeira, jerrybt@bu.edu 02/28/2026-->
+<!--Discription: Template to allow users to update their profile-->
+
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<article class="form-card">
+    <h2>Update Profile</h2>
+
+    <form action="{% url 'update_profile' profile.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!--Display of the form info-->
+        <div class="form-group"> 
+            <table>
+                {{ form.as_table }}
+            </table>
+        <div>
+        
+        <!--Buttons for updating or canceling the update-->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{% url 'show_profile' profile.pk %}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</article>
+{% endblock %}

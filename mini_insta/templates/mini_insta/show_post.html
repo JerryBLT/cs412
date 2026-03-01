@@ -21,7 +21,7 @@
         <div class="photos-grid">
           {% for photo in post.get_all_photos %}
             <div class="photo-container">
-              <img src="{{ photo.image_url }}" alt="Post photo">
+              <img src="{{ photo.get_image_url }}" alt="Post photo">
             </div>
           {% endfor %}
         </div>

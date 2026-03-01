@@ -8,17 +8,24 @@
 <article class="form-card">
   <h2>Create a Post for {{ profile.username }}</h2>
 
-  <form action="{% url 'create_post' profile.pk %}" method="POST" >
+  <form action="{% url 'create_post' profile.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group"> 
+      <!--Display the form post caption-->
       <table>
         {{ form.as_table }}
       </table>
+
+      <!--Upload the photos for the post-->
       <div>
-        <label for="photo_url">Photo URL</label>
-        <input type="url" name="photo_url" id="photo_url" placeholder="https://example.com/image.jpg">
+        <!-- <label for="photo_url">Photo URL</label>
+        <input type="url" name="photo_url" id="photo_url" placeholder="https://example.com/image.jpg"> -->
+        <label for="files">Upload Photo(s)</label>
+        <input type="file" name="files" id="files" accept="image/*" multiple>
       </div>
     </div>
+    
+    <!--Button for posting or canceling the post-->
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Create Post</button>
       <a href="{% url 'show_profile' profile.pk %}" class="btn btn-ghost">Cancel</a>

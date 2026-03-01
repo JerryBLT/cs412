@@ -1,3 +1,6 @@
+# file: mini_insta/admin.py
+# author: Jerry Teixeira (jerrybt@bu.edu), 02/28/26
+# discription: register all models
 from django.contrib import admin
 
 # Register your models here.
