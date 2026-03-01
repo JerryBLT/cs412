@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from .models import Article
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Article, Comment
 import random
-from .forms import CreateArticleForm, CreateCommentForm
+from .forms import CreateArticleForm, CreateCommentForm, UpdateArticleForm
 from django.urls import reverse 
 
 # Create your views here.
@@ -43,6 +43,13 @@ class CreateArticleView(CreateView):
 
     form_class = CreateArticleForm
     template_name = "blog/create_article_form.html"
+
+    def form_valid(self, form) :
+        '''Override the default method to add some debug information.'''
+        # print out the form data:
+        print (f'CreateArticleView.form_valid(): {form. cleaned_data} ')
+        # delegate work to the superclass to do the rest:
+        return super().form_valid(form)
 
 class CreateCommentView(CreateView):
     '''view to handle the creation of a new comment on an article.'''
@@ -90,3 +97,31 @@ class CreateCommentView(CreateView):
 
         # delegate the work to the superclass method form_valid:
         return super().form_valid(form)
+
+
+class UpdateArticleView(UpdateView):
+    '''View class to handle update of an Article base on the PK'''
+    
+    model = Article
+    form_class = UpdateArticleForm
+    template_name = "blog/update_article_form.html"
+
+class DeleteCommentView(DeleteView):
+    '''View class to delete a comment on an Article'''
+
+    model = Comment
+    template_name = "blog/delete_comment_form.html"
+
+    def get_success_url(self):
+        '''Return the URL to redirect to after a sucessful delete.'''
+        
+        # find the PK to this Comment:
+        pk = self.kwargs['pk']
+        # find the Comment object:
+        comment = Comment.objects.get(pk=pk)
+
+        # find the PK of the article to which this comment is associated:
+        article = comment.article
+
+        # return the URL to redirect to:
+        return reverse('article', kwargs={'pk':article.pk})
