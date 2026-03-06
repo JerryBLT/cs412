@@ -1,0 +1,16 @@
+<!-- File: mini_insta/templates/mini_insta/logged_out.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 2026-03-06 -->
+<!-- Discription: Template for logged out confirmation page -->
+
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+<article class="form-card">
+  <h2>You are logged out</h2>
+  <p class="field-hint">You have been signed out of Mini Insta.</p>
+  <div class="form-actions">
+    <a href="{% url 'login' %}" class="btn btn-primary">Log in again</a>
+    <a href="{% url 'show_all_profiles' %}" class="btn btn-ghost">Back to profiles</a>
+  </div>
+</article>
+{% endblock %}

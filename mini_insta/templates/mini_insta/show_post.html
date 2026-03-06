@@ -61,8 +61,10 @@
     <!--Button to go back to the profile page, & to delete or update the post-->
     <div class="post-actions">
       <a href="{% url 'show_profile' post.profile.pk %}" class="btn btn-ghost">Back to Profile</a>
-      <a href="{% url 'update_post' post.pk %}" class="btn btn-ghost">Update</a>
-      <a href="{% url 'delete_post' post.pk %}" class="btn btn-ghost">Delete</a>
+      {% if request.user.is_authenticated and post.profile.user == request.user %}
+        <a href="{% url 'update_post' post.pk %}" class="btn btn-ghost">Update</a>
+        <a href="{% url 'delete_post' post.pk %}" class="btn btn-ghost">Delete</a>
+      {% endif %}
     </div>
   </article>
 {% endblock %}

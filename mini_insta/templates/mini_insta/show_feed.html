@@ -14,7 +14,7 @@
     <div class="profile-info">
       <h1>{{ profile.display_name }}'s Feed</h1>
       <p>@{{ profile.username }} • following {{ profile.get_num_following }} profiles</p>
-      <a class="btn btn-primary" href="{% url 'show_profile' profile.pk %}">Back to profile</a>
+      <a class="btn btn-primary" href="{% url 'my_profile' %}">Back to profile</a>
     </div>
   </div>
 

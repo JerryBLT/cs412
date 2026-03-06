@@ -21,7 +21,9 @@
       <div class="identity">
         <h1 class="display-name">{{ profile.display_name }}</h1>
         <span class="username">@{{ profile.username }}</span>
-        <a href="{% url 'update_profile' profile.pk %}" class="btn btn-edit">Update Profile</a>
+        {% if request.user.is_authenticated and profile.user == request.user %}
+          <a href="{% url 'update_profile' %}" class="btn btn-edit">Update Profile</a>
+        {% endif %}
       </div>
       
       <!--The profile stats: post, following, followers count-->
@@ -66,7 +68,6 @@
   <section class="posts-section">
     <div class="section-header">
       <h2>Posts</h2>
-        <!-- <a href="{% url 'create_post' profile.pk %}" class="btn btn-primary">+ New Post</a> -->
     </div>
 
     <!--Check if the profile has post and show it-->

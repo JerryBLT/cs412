@@ -8,7 +8,7 @@
 <article class="form-card">
   <h2>Create a Post for {{ profile.username }}</h2>
 
-  <form action="{% url 'create_post' profile.pk %}" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'create_post' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group"> 
       <!--Display the form post caption-->
@@ -28,7 +28,7 @@
     <!--Button for posting or canceling the post-->
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Create Post</button>
-      <a href="{% url 'show_profile' profile.pk %}" class="btn btn-ghost">Cancel</a>
+      <a href="{% url 'my_profile' %}" class="btn btn-ghost">Cancel</a>
     </div>
   </form>
 </article>
