@@ -21,7 +21,7 @@
       <div class="identity">
         <h1 class="display-name">{{ profile.display_name }}</h1>
         <span class="username">@{{ profile.username }}</span>
-        <a href="{% url 'update_profile' profile.pk %}" class="btn btn-primary">Update Profile</a>
+        <a href="{% url 'update_profile' profile.pk %}" class="btn btn-edit">Update Profile</a>
       </div>
       
       <!--The profile stats: post, following, followers count-->

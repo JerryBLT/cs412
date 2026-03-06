@@ -4,30 +4,48 @@
 
 <html>
     <head>
-        <title>My Blog</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles-blog.css' %}">
+        <title>Our Blog</title>
+        <link rel="stylesheet" href="{% static 'styles-blog.css' %}">
     </head>
+ 
+ 
     <body>
-        <header>
-            <h1>My Blog</h1>
+        <head>
+            <h1>Our Blog</h1>
             <nav>
-                <li>
-                    <a href="{% url 'show_all' %}">Show All</a>
-                </li>
-                <li>
-                    <a href="{% url 'random' %}">Random</a>
-                </li>
-                <li>
-                    <a href="{% url 'create_article' %}">Create</a>
-                </li>
+                <ul>
+					<!-- URLs for users who are not logged in -->
+                    <li><a href="{% url 'random' %}">Random</a></li>
+                    <li><a href="{% url 'show_all' %}">Show All</a></li>
+ 
+ 
+                    <!-- URLs for logged in users only -->
+                    {% if request.user.is_authenticated %}                    
+                    <li>
+                        <a href="{% url 'create_article' %}">Create</a>
+                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                        </form>
+                    </li>
+                    <!-- URLs for users who are not logged in -->
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Log in</a></li>
+                    {% endif %}
+                </ul>
+                <hr>
+                {% if request.user.is_authenticated %}
+                Logged in as: {{request.user}}
+                {% else %}
+                Not logged in.
+                {% endif %}
             </nav>
-        </header>
+        </head>
+ 
+        <!-- substitute in the specific content here -->
         {% block content %}
         {% endblock %}
+ 
     </body>
-
-    <footer>
-        <p>&copy; Jerry Teixera jerrybt@bu.edu</p>
-    </footer>
-
+ 
 </html>
