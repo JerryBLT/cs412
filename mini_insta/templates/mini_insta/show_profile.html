@@ -23,6 +23,12 @@
         <span class="username">@{{ profile.username }}</span>
         {% if request.user.is_authenticated and profile.user == request.user %}
           <a href="{% url 'update_profile' %}" class="btn btn-edit">Update Profile</a>
+        {% elif request.user.is_authenticated and logged_in_profile %}
+          {% if is_following_profile %}
+            <a href="{% url 'delete_follow_profile' profile.pk %}" class="btn btn-ghost">Unfollow</a>
+          {% else %}
+            <a href="{% url 'follow_profile' profile.pk %}" class="btn btn-primary">Follow</a>
+          {% endif %}
         {% endif %}
       </div>
       

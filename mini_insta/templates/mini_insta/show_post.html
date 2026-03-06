@@ -18,6 +18,13 @@
       {% if post.caption %}
         <p class="post-caption">{{ post.caption }}</p>
       {% endif %}
+      {% if request.user.is_authenticated and logged_in_profile and post.profile.user != request.user %}
+        {% if has_liked %}
+          <a href="{% url 'delete_like_post' post.pk %}" class="btn btn-ghost">Unlike</a>
+        {% else %}
+          <a href="{% url 'like_post' post.pk %}" class="btn btn-ghost">Like</a>
+        {% endif %}
+      {% endif %}
     </div>
 
     <!--Checking for the photo to display-->
@@ -57,6 +64,17 @@
         {% endif %}
       {% endwith %}
     </section>
+
+    {% if request.user.is_authenticated and logged_in_profile %}
+      <section class="post-comments">
+        <form action="{% url 'add_comment' post.pk %}" method="POST">
+          {% csrf_token %}
+          <label for="text">Add a comment</label>
+          <textarea id="text" name="text" rows="3"></textarea>
+          <button type="submit" class="btn btn-primary">Post comment</button>
+        </form>
+      </section>
+    {% endif %}
 
     <!--Button to go back to the profile page, & to delete or update the post-->
     <div class="post-actions">

@@ -58,6 +58,10 @@ class Profile(models.Model):
         following_profiles = self.get_following()
         posts = Post.objects.filter(profile__in=following_profiles).order_by('-timestamp')
         return posts
+
+    def is_following(self, other_profile):
+        '''Return True if this Profile already follows other_profile.'''
+        return Follow.objects.filter( profile=other_profile, follower_profile=self ).exists()
  
     
 class Post(models.Model):
@@ -81,9 +85,17 @@ class Post(models.Model):
         '''Return all comments made on this post ordered by newest first.'''
         return Comment.objects.filter(post=self).order_by('-timestamp')
 
+    def get_absolute_url(self):
+        '''Return the absolute URL for this post detail page.'''
+        return reverse('show_post', kwargs={'pk': self.pk})
+
     def get_likes(self):
         '''Return all likes associated with this post.'''
         return Like.objects.filter(post=self)
+
+    def is_liked_by(self, profile):
+        '''Return True if profile already liked this post.'''
+        return Like.objects.filter(post=self, profile=profile).exists()
     
 class Photo(models.Model):
     '''A photo model that represents a photo associated with a post.'''

@@ -2,11 +2,11 @@
 # Author: Jerry Teixeira jerrybt@bu.edu, 02/12/2026
 # Discrition: View to display all user profiles in the mini_insta app.
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.exceptions import PermissionDenied
-from .models import Post, Profile, Photo
+from .models import Post, Profile, Photo, Follow, Like, Comment
 from .forms import CreatePostForm, CreateProfileForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,11 +41,43 @@ class ProfileDetailView(DetailView):
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
 
+    def get_context_data(self, **kwargs):
+        '''Add logged-in profile context for follow button visibility.'''
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        
+        logged_in_profile = None
+        is_following_profile = False
+        if self.request.user.is_authenticated:
+            logged_in_profile = Profile.objects.filter(user=self.request.user).first()
+            if logged_in_profile is not None and logged_in_profile.pk != profile.pk:
+                is_following_profile = logged_in_profile.is_following(profile)
+
+        context['logged_in_profile'] = logged_in_profile
+        context['is_following_profile'] = is_following_profile
+        return context
+
 class PostDetailView(DetailView):
     '''View to display a single post in the mini_insta app.'''
     model = Post
     template_name = "mini_insta/show_post.html"
     context_object_name = "post"
+
+    def get_context_data(self, **kwargs):
+        '''Add logged-in profile and like status for like/unlike action buttons.'''
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+
+        logged_in_profile = None
+        has_liked = False
+        if self.request.user.is_authenticated:
+            logged_in_profile = Profile.objects.filter(user=self.request.user).first()
+            if logged_in_profile is not None:
+                has_liked = post.is_liked_by(logged_in_profile)
+
+        context['logged_in_profile'] = logged_in_profile
+        context['has_liked'] = has_liked
+        return context
 
 class CreatePostView(ProfileAuthMixin, CreateView):
     '''view to display a create post in the mini_insta app'''
@@ -232,7 +264,7 @@ class CreateProfileView(CreateView):
     def get_context_data(self, **kwargs):
         '''Pass a UserCreationForm to the template along with profile form context.'''
         context = super().get_context_data(**kwargs)
-        context['create_user_form'] = UserCreationForm()
+        context['user_form'] = UserCreationForm()
         return context 
 
     def get_success_url(self):
@@ -254,3 +286,72 @@ class CreateProfileView(CreateView):
         '''Re-render with both bound forms and validation errors.'''
         context = self.get_context_data(form=form, user_form=UserCreationForm(self.request.POST))
         return self.render_to_response(context)
+
+
+class FollowProfileView(ProfileAuthMixin, View):
+    '''Create a follow relationship from logged-in user to target profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_logged_in_profile()
+        view_profile = Profile.objects.get(pk=kwargs['pk'])
+
+        if user == view_profile: 
+            return redirect(user.get_absolute_url())
+        
+        Follow.objects.get_or_create(follower_profile=user, profile=view_profile)
+        return redirect(view_profile.get_absolute_url())
+
+
+class DeleteFollowProfileView(ProfileAuthMixin, View):
+    '''Remove a follow relationship from logged-in user to target profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        '''Remove the Follow unless it is the user's own profile, then redirect back.'''
+        user = self.get_logged_in_profile()
+        view_profile = Profile.objects.get(pk=kwargs['pk'])
+
+        if user == view_profile: 
+            return redirect(user.get_absolute_url())
+        
+        Follow.objects.filter(follower_profile=user, profile=view_profile).delete()
+        return redirect(view_profile.get_absolute_url())
+
+
+class LikePostView(ProfileAuthMixin, View):
+    '''Create a like on a post from the logged-in profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_logged_in_profile()
+        post = Post.objects.get(pk=kwargs['pk'])
+
+        if user == post.profile: 
+            return redirect(user.get_absolute_url())
+        
+        Like.objects.get_or_create(post=post, profile=user)
+        return redirect(post.get_absolute_url())
+
+
+class DeleteLikePostView(ProfileAuthMixin, View):
+    '''Delete a like on a post from the logged-in profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_logged_in_profile()
+        post = Post.objects.get(pk=kwargs['pk'])
+
+        if user ==post.profile: 
+            return redirect(user.get_absolute_url())
+        
+        Like.objects.filter(post=post, profile=user).delete()
+        return redirect(post.get_absolute_url())
+
+
+class CreateCommentView(ProfileAuthMixin, View):
+    '''Create a comment on a post from the logged-in profile.'''
+
+    def dispatch(self, request, *args, **kwargs):
+        commenter = self.get_logged_in_profile()
+        post = Post.objects.get(pk=kwargs['pk'])
+        text = (request.POST.get('text') or '').strip()
+        if text:
+            Comment.objects.create(post=post, profile=commenter, text=text)
+        return redirect('show_post', pk=post.pk)
