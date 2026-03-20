@@ -1,0 +1,148 @@
+body.voter-analytics-app {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #13294b;
+    background: linear-gradient(160deg, #f5f7fb 0%, #ecf1fb 45%, #ffffff 100%);
+}
+
+body.voter-analytics-app h1,
+body.voter-analytics-app h2,
+body.voter-analytics-app h3 {
+    margin: 14px 0;
+    color: #1f3a5c;
+}
+
+body.voter-analytics-app header {
+    position: sticky;
+    top: 0;
+    padding: 14px 20px;
+    background: #ffffffd9;
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid #dbe7f8;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    z-index: 20;
+}
+
+body.voter-analytics-app header h1 {
+    margin: 0;
+    font-size: 1.9em;
+    letter-spacing: 0.02em;
+}
+
+body.voter-analytics-app nav ul {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.voter-analytics-app nav li {
+    margin: 0;
+}
+
+body.voter-analytics-app nav a {
+    color: #1d4f8e;
+    font-weight: 700;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid #d3e1f5;
+    background: #f7fbff;
+}
+
+body.voter-analytics-app .container {
+    padding: 90px 0 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 92%;
+}
+
+body.voter-analytics-app .row {
+    margin: 12px 0 16px;
+}
+
+body.voter-analytics-app table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #d5e2f2;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body.voter-analytics-app th,
+body.voter-analytics-app td {
+    border: 1px solid #e2eaf5;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+body.voter-analytics-app th {
+    background: #eef4fe;
+    color: #183f70;
+    font-weight: 700;
+}
+
+body.voter-analytics-app tbody tr:nth-child(odd) {
+    background: #f7fbff;
+}
+
+body.voter-analytics-app .pagination {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    margin: 8px 0;
+}
+
+body.voter-analytics-app .pagination li {
+    display: inline-block;
+}
+
+body.voter-analytics-app form {
+    background: #ffffff;
+    border: 1px solid #d7e3f5;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+}
+
+body.voter-analytics-app table select,
+body.voter-analytics-app table input[type="checkbox"],
+body.voter-analytics-app table input[type="submit"] {
+    transform: scale(1.03);
+}
+
+body.voter-analytics-app select,
+body.voter-analytics-app input[type="submit"] {
+    border: 1px solid #bfd0e8;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #fff;
+    color: #173a63;
+}
+
+body.voter-analytics-app input[type="submit"] {
+    font-weight: 700;
+    cursor: pointer;
+}
+
+body.voter-analytics-app .map-link {
+    display: inline-block;
+    margin-top: 10px;
+    background: #1d4f8e;
+    color: #fff !important;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+body.voter-analytics-app .map-link:hover {
+    background: #173c69;
+    color: #fff !important;
+}
+
+body.voter-analytics-app .search-heading,
+body.voter-analytics-app h1 {
+    text-transform: none;
+}

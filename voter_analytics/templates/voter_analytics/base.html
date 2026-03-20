@@ -1,0 +1,28 @@
+<!-- File: voter_analytics/templates/voter_analytics/base.html -->
+<!-- author: Jerry Teixeira (jerrybt@bu.edu), 03/20/26 -->
+<!-- Description: Shared page skeleton used by all voter analytics views. -->
+{% load static %}
+<html>
+    <head>
+        <title>Voter Analytics</title>
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <link rel="stylesheet" href="{% static 'voter_analytics.css' %}">
+    </head>
+    <body class="voter-analytics-app">
+        <!-- Global header and main navigation for all pages -->
+        <header>
+            <h1>Voter Analytics</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'voters' %}">Voter List</a></li>
+                    <li><a href="{% url 'graphs' %}">Graphs</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Child templates render their own page-level content here -->
+    {% block content %}
+    {% endblock %}
+
+    </body>
+</html>

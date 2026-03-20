@@ -1,0 +1,29 @@
+<!-- File: voter_analytics/templates/voter_analytics/graphs.html -->
+<!-- author: Jerry Teixeira (jerrybt@bu.edu), 03/20/26 -->
+<!-- Description: Template for voter analytics graphs and filtering form. -->
+{% extends 'voter_analytics/base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Page title for the aggregate visualization dashboard -->
+    <h1>Voter Graphs</h1>
+
+    <div class="row">
+        <!-- shared search/filter form for graph filtering -->
+        {% include 'voter_analytics/search.html' %}
+    </div>
+
+    <div class="row">
+        <!-- Graph 1: Birth year distribution (histogram/bar chart) -->
+        {{ graph_div_birth_year|safe }}
+    </div>
+    <div class="row">
+        <!-- Graph 2: Party affiliation share (pie chart) -->
+        {{ graph_div_party|safe }}
+    </div>
+    <div class="row">
+        <!-- Graph 3: Election participation counts (bar chart across 5 elections) -->
+        {{ graph_div_elections|safe }}
+    </div>
+</div>
+{% endblock %}
