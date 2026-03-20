@@ -69,7 +69,7 @@ class CreateArticleView(LoginRequiredMixin, CreateView):
     def form_valid(self, form) :
         '''Override the default method to add some debug information.'''
         # print out the form data:
-        print (f'CreateArticleView.form_valid(): {form. cleaned_data} ')
+        print (f'CreateArticleView.form_valid(): {form.cleaned_data} ')
 
         # find the logged in user
         user = self.request.user
