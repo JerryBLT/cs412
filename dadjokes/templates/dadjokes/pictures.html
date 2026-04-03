@@ -1,0 +1,17 @@
+<!--File: dadjokes/templates/dadjokes/pictures.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for displaying all pictures-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+  <h1>All Images</h1>
+    <ul>
+        <!-- iterate through all the pictures and get the url to display it and the pk to link to the detailed page -->
+        {% for picture in pictures %}
+        <div class="card">
+            <a href="{% url 'dadjokes_picture_detail' picture.pk %}"><li><img src="{{ picture.get_image_url }}"/></li></a>
+        </div>
+        {% endfor %}
+    </ul>
+{% endblock %}

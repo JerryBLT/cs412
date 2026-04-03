@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'mini_insta',
     'marathon_analytics',
     'voter_analytics',
+    'dadjokes',
+    "rest_framework", ## NEW: Django REST framework
 ] 
 
 MIDDLEWARE = [
@@ -147,4 +149,9 @@ if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     MEDIA_URL = '/jerrybt/media/'
 
 
-
+## at the bottom of the file:
+REST_FRAMEWORK = {
+  'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+  'PAGE_SIZE': 10
+}
+ 

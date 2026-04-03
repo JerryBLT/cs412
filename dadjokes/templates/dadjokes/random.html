@@ -1,0 +1,21 @@
+<!--File: dadjokes/templates/dadjokes/random.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for displaying a random joke and picture-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+  <h1>Random Joke + Picture</h1>
+  
+  <h2>Joke</h2>
+  <p>{{ joke.text }}</p>
+  <p><small>by {{ joke.contributor }} at {{ joke.created }}</small></p>
+
+
+  <h2>Picture</h2>
+  <p><a href="{{ picture.image_url }}" target="_blank">View image / GIF</a></p>
+  <img src="{{ picture.image_url }}" alt="Dad joke image" style="max-width:400px;" />
+  <p><small>by {{ picture.contributor }} at {{ picture.created }}</small></p>
+
+  <p><a href="{% url 'dadjokes_random' %}">Another random set</a></p>
+{% endblock %}

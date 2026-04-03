@@ -1,0 +1,12 @@
+<!--File: dadjokes/templates/dadjokes/joke_detail.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for displaying a single joke detail-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+  <h1>Joke Detail</h1>
+  <p>{{ joke.text }}</p>
+  <p><small>by {{ joke.contributor }} at {{ joke.created }}</small></p>
+  <p><a href="{% url 'dadjokes_jokes' %}">Back to all jokes</a> | <a href="{% url 'dadjokes_home' %}">Random</a></p>
+{% endblock %}

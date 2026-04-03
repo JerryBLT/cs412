@@ -1,0 +1,17 @@
+<!--File: dadjokes/templates/dadjokes/jokes.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for displaying all jokes-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+ <h1>All Dad Jokes</h1>
+    <ul>
+        <!-- iterate through all the jokes and get the joke in .text, as well as the pk to link it to the detail page -->
+        {% for joke in jokes%}
+        <div class="card">
+            <a href="{% url 'dadjokes_joke_detail' joke.pk %}"><li>{{ joke.text }} -- Contributor: {{ joke.contributor }}</li></a>
+        </div>
+        {% endfor %}
+    </ul>
+{% endblock %}

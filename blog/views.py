@@ -8,6 +8,30 @@ from django.contrib.auth.mixins import LoginRequiredMixin ## NEW
 from django.contrib.auth.forms import UserCreationForm ## NEW
 from django.contrib.auth.models import User ## NEW
 from django.contrib.auth import login # NEW
+from rest_framework import generics
+from .serializers import *
+
+class ArticleListAPIView(generics.ListCreateAPIView):
+  '''
+  An API view to return a listing of Articles 
+  and to create an Article.
+  '''
+  queryset = Article.objects.all()
+  serializer_class = ArticleSerializer
+
+class ArticleCreateAPIView(generics.CreateAPIView):
+  '''
+  An API view to create an Article.
+  '''
+  queryset = Article.objects.all()
+  serializer_class = ArticleSerializer
+ 
+class ArticleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+  '''
+  An API view to retrieve/update/destroy an Article.
+'''
+  queryset = Article.objects.all()
+  serializer_class = ArticleSerializer
 
 
 

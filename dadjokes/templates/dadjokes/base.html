@@ -1,0 +1,27 @@
+<!--File: dadjokes/templates/dadjokes/base.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for the base structure-->
+
+{% load static %}
+
+<html>
+    <head>
+        <title>Dad Jokes</title>
+        <link rel="stylesheet" href="{% static 'styles-dadjokes.css' %}">
+    </head>
+ 
+ 
+    <body>
+        <nav>
+            <a href="{% url 'dadjokes_home' %}">Random</a>
+            <a href="{% url 'dadjokes_jokes' %}">All Jokes</a>
+            <a href="{% url 'dadjokes_pictures' %}">All Pictures</a>
+        </nav>
+
+        <!-- substitute in the specific content here -->
+        {% block content %}
+        {% endblock %}
+ 
+    </body>
+ 
+</html>

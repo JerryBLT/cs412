@@ -1,0 +1,13 @@
+<!--File: dadjokes/templates/dadjokes/picture_detail.html-->
+<!--Author: Jerry Teixeira (jerrybt@bu.edu), 04/03/2026-->
+<!--Description: Template for displaying a single picture detail-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+  <h1>Picture Detail</h1>
+  <p><a href="{{ picture.image_url }}" target="_blank">View Image / GIF</a></p>
+  <img src="{{ picture.image_url }}" alt="Dadjoke picture" style="max-width:500px;" />
+  <p><small>by {{ picture.contributor }} at {{ picture.created }}</small></p>
+  <p><a href="{% url 'dadjokes_pictures' %}">Back to all pictures</a> | <a href="{% url 'dadjokes_home' %}">Random</a></p>
+{% endblock %}
