@@ -33,5 +33,12 @@ urlpatterns = [
     path("post/<int:pk>/delete_like", DeleteLikePostView.as_view(), name="delete_like_post"),
     path("post/<int:pk>/comment", CreateCommentView.as_view(), name="add_comment"),
 
+    # REST API
+    path("api/profiles/", ProfileListAPIView.as_view(), name="mini_insta_api_profiles"),
+    path("api/profile/<int:pk>/", ProfileDetailAPIView.as_view(), name="mini_insta_api_profile_detail"),
+    path("api/profile/<int:pk>/posts/", ProfilePostsAPIView.as_view(), name="mini_insta_api_profile_posts"),
+    path("api/profile/<int:pk>/feed/", ProfileFeedAPIView.as_view(), name="mini_insta_api_profile_feed"),
+    path("api/posts/", PostListCreateAPIView.as_view(), name="mini_insta_api_posts"),
+
 
 ]

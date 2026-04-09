@@ -12,6 +12,8 @@ from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from rest_framework import generics
+from .serializers import ProfileSerializer, PostSerializer, PostCreateSerializer
 
 
 class ProfileAuthMixin(LoginRequiredMixin):
@@ -355,3 +357,50 @@ class CreateCommentView(ProfileAuthMixin, View):
         if text:
             Comment.objects.create(post=post, profile=commenter, text=text)
         return redirect('show_post', pk=post.pk)
+
+
+class ProfileListAPIView(generics.ListAPIView):
+    '''API endpoint to list all profiles.'''
+
+    queryset = Profile.objects.all().order_by('id')
+    serializer_class = ProfileSerializer
+
+
+class ProfileDetailAPIView(generics.RetrieveAPIView):
+    '''API endpoint to retrieve one profile by primary key.'''
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+class ProfilePostsAPIView(generics.ListAPIView):
+    '''API endpoint to list posts (and photos) for one profile.'''
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        '''Return posts created by the requested profile, newest first.'''
+        return Post.objects.filter(profile_id=self.kwargs['pk']).order_by('-timestamp')
+
+
+class ProfileFeedAPIView(generics.ListAPIView):
+    '''API endpoint to list feed posts for one profile.'''
+
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        '''Return feed posts for the requested profile.'''
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        return profile.get_post_feed()
+
+
+class PostListCreateAPIView(generics.ListCreateAPIView):
+    '''API endpoint to list all posts and create a new post.'''
+
+    queryset = Post.objects.all().order_by('-timestamp')
+
+    def get_serializer_class(self):
+        '''Use different serializers for listing vs creating posts.'''
+        if self.request.method == 'POST':
+            return PostCreateSerializer
+        return PostSerializer
