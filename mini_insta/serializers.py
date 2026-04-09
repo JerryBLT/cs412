@@ -21,8 +21,14 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = ["id", "timestamp", "image"]
 
     def get_image(self, obj):
-        '''Return whichever image source this photo stores.'''
-        return obj.get_image_url()
+        '''Return an absolute URL for whichever image source this photo stores.'''
+        url = obj.get_image_url()
+        if not url:
+            return ''
+        request = self.context.get('request')
+        if request:
+            return request.build_absolute_uri(url)
+        return url
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -38,7 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
     def get_photos(self, obj):
         '''Return photos attached to this post in timestamp order.'''
         photos = obj.get_all_photos()
-        return PhotoSerializer(photos, many=True).data
+        return PhotoSerializer(photos, many=True, context=self.context).data
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
