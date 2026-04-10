@@ -10,9 +10,14 @@ from .models import Post, Profile, Photo, Follow, Like, Comment
 from .forms import CreatePostForm, CreateProfileForm, UpdateProfileForm, UpdatePostForm
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate         # authenticate: checks credentials against DB
 from django.contrib.auth.forms import UserCreationForm
-from rest_framework import generics
+from rest_framework import generics, status             # generics: pre-built CRUD views; status: HTTP status codes
+from rest_framework.views import APIView                # base class for custom API endpoints
+from rest_framework.response import Response            # DRF response that renders to JSON
+from rest_framework.permissions import AllowAny, IsAuthenticated  # AllowAny: open; IsAuthenticated: token required
+from rest_framework.authentication import TokenAuthentication     # validates Authorization: Token <key> header
+from rest_framework.authtoken.models import Token       # the DB-backed token model
 from .serializers import ProfileSerializer, PostSerializer, PostCreateSerializer
 
 
@@ -359,9 +364,49 @@ class CreateCommentView(ProfileAuthMixin, View):
         return redirect('show_post', pk=post.pk)
 
 
+class LoginAPIView(APIView):
+    '''API endpoint to authenticate a user and return a token + profile id.'''
+
+    # open up this endpoint so unauthenticated users can reach it
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        '''Validate credentials and return an auth token for API usage.'''
+        username = (request.data.get('username') or '').strip()
+        password = request.data.get('password') or ''
+
+        # authenticate() checks username/password against the database
+        user = authenticate(request, username=username, password=password)
+        if user is None:
+            # return 401 so the client knows credentials were wrong, not a server error
+            return Response(
+                {'detail': 'Invalid credentials.'},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        # get_or_create returns the existing token or creates one on first login
+        token, created = Token.objects.get_or_create(user=user)
+        # look up the Profile linked to this Django User
+        profile = Profile.objects.filter(user=user).first()
+
+        # return token + profile_id so React Native can store both and make authenticated requests
+        return Response(
+            {
+                'token': token.key,
+                'profile_id': profile.id if profile else None,
+                'user_id': user.id,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class ProfileListAPIView(generics.ListAPIView):
     '''API endpoint to list all profiles.'''
 
+    # require a valid token on every request to this endpoint
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all().order_by('id')
     serializer_class = ProfileSerializer
 
@@ -369,6 +414,8 @@ class ProfileListAPIView(generics.ListAPIView):
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     '''API endpoint to retrieve one profile by primary key.'''
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
@@ -376,31 +423,41 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
 class ProfilePostsAPIView(generics.ListAPIView):
     '''API endpoint to list posts (and photos) for one profile.'''
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
         '''Return posts created by the requested profile, newest first.'''
+        # pk comes from the URL pattern, e.g. /api/profile/3/posts/
         return Post.objects.filter(profile_id=self.kwargs['pk']).order_by('-timestamp')
 
 
 class ProfileFeedAPIView(generics.ListAPIView):
     '''API endpoint to list feed posts for one profile.'''
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
 
     def get_queryset(self):
         '''Return feed posts for the requested profile.'''
         profile = Profile.objects.get(pk=self.kwargs['pk'])
+        # get_post_feed() returns posts from profiles this user follows, newest first
         return profile.get_post_feed()
 
 
 class PostListCreateAPIView(generics.ListCreateAPIView):
     '''API endpoint to list all posts and create a new post.'''
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Post.objects.all().order_by('-timestamp')
 
     def get_serializer_class(self):
         '''Use different serializers for listing vs creating posts.'''
+        # POST uses PostCreateSerializer (accepts profile_id + image fields)
+        # GET uses PostSerializer (nests full profile and photos)
         if self.request.method == 'POST':
             return PostCreateSerializer
         return PostSerializer

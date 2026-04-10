@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'voter_analytics',
     'dadjokes',
     "rest_framework", ## NEW: Django REST framework
+    "rest_framework.authtoken",
 ] 
 
 MIDDLEWARE = [
@@ -152,6 +153,10 @@ if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
 ## at the bottom of the file:
 REST_FRAMEWORK = {
   'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-  'PAGE_SIZE': 10
+  'PAGE_SIZE': 10,
+  'DEFAULT_AUTHENTICATION_CLASSES': [
+    'rest_framework.authentication.TokenAuthentication',
+    'rest_framework.authentication.SessionAuthentication',
+  ],
 }
  

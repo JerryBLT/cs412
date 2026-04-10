@@ -34,6 +34,7 @@ urlpatterns = [
     path("post/<int:pk>/comment", CreateCommentView.as_view(), name="add_comment"),
 
     # REST API
+    path("api/login/", LoginAPIView.as_view(), name="mini_insta_api_login"),
     path("api/profiles/", ProfileListAPIView.as_view(), name="mini_insta_api_profiles"),
     path("api/profile/<int:pk>/", ProfileDetailAPIView.as_view(), name="mini_insta_api_profile_detail"),
     path("api/profile/<int:pk>/posts/", ProfilePostsAPIView.as_view(), name="mini_insta_api_profile_posts"),
