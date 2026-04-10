@@ -21,10 +21,30 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     '''Serializer for reading Profile data.'''
 
+    followers_count = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
         # expose only the fields the API client needs
-        fields = ["id", "username", "display_name", "bio_text", "join_date", "profile_image_url",]
+        fields = [
+            "id",
+            "username",
+            "display_name",
+            "bio_text",
+            "join_date",
+            "profile_image_url",
+            "followers_count",
+            "following_count",
+        ]
+
+    def get_followers_count(self, obj):
+        '''Return total follower count for this profile.'''
+        return obj.get_num_followers()
+
+    def get_following_count(self, obj):
+        '''Return total following count for this profile.'''
+        return obj.get_num_following()
 
 
 class PhotoSerializer(serializers.ModelSerializer):
