@@ -1,0 +1,103 @@
+{% extends "project/base.html" %}
+{% block page_title %}Operations Dashboard{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <!-- Dashboard hero section -->
+    <p class="eyebrow">Today at a glance</p>
+    <h3>Recruitment, enrollment, and visit readiness in one place.</h3>
+    <p class="hero-copy">Use this screen to move between study oversight, participant records, and scheduled visits as your data is added to the app.</p>
+  </div>
+
+  <div class="hero-panel">
+    <!-- Quick actions for navigation -->
+    <p>Quick actions</p>
+    <strong>Manage studies, participants, and visits from the project workspace.</strong>
+    <a class="button-link" href="{% url 'project_scheduling_hub' %}">Open scheduling workspace</a>
+  </div>
+  
+</section>
+
+<section class="metric-grid">
+  <!-- Metrics overview -->
+  {% for metric in metrics %}
+    <article class="metric-card">
+      <p>{{ metric.label }}</p>
+      <strong>{{ metric.value }}</strong>
+      <span>{{ metric.detail }}</span>
+    </article>
+  {% endfor %}
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Upcoming visits</h3>
+      <a href="{% url 'project_visit_calendar' %}">Open calendar</a>
+    </div>
+    <div class="stack-list">
+      <!-- List of upcoming visits -->
+      {% for visit in recent_visits %}
+        <a class="list-row" href="{% url 'project_visit_detail' visit.id %}">
+          <div>
+            <strong>{{ visit.visit_type }}</strong>
+            <p>{{ visit.enrollment.participant }} • {{ visit.enrollment.study.title }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ visit.visit_date|date:"M j, Y" }}</span>
+            <span>{{ visit.visit_date|date:"g:i A" }}</span>
+            <span class="badge">{{ visit.status }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No visits yet. Add visits in the admin or through your data load.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Recent participants</h3>
+      <a href="{% url 'project_participant_list' %}">View roster</a>
+    </div>
+    <div class="stack-list">
+      {% for participant in recent_participants %}
+        <a class="list-row" href="{% url 'project_participant_detail' participant.id %}">
+          <div>
+            <strong>{{ participant }}</strong>
+            <p>{{ participant.contact_info }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ participant.status }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No participants yet. Create participant records to populate this view.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h3>Study portfolio</h3>
+    <a href="{% url 'project_study_list' %}">All studies</a>
+  </div>
+  <div class="card-grid">
+    {% for study in studies %}
+      <a class="study-card" href="{% url 'project_study_detail' study.id %}">
+        <p class="eyebrow">{{ study.protocol_number }}</p>
+        <h4>{{ study.title }}</h4>
+        <p>{{ study.description }}</p>
+        <div class="study-meta">
+          <span>{{ study.status }}</span>
+          <span>{{ study.enrollment_count }} enrollments</span>
+        </div>
+      </a>
+    {% empty %}
+      <p class="empty-state">No studies yet. Add studies to begin building the schedule.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "project/base.html" %}
+{% block page_title %}Participant Details{% endblock %}
+
+{% block content %}
+<section class="detail-hero">
+  <div>
+    <!-- Participant header and edit link -->
+    <p class="eyebrow">Participant</p>
+    <h3>{{ participant }}
+      <a href="{% url 'project_participant_edit' participant.id %}" class="button-link" style="font-size:1rem; margin-left:1rem;">Edit</a>
+    </h3>
+    <p>{{ participant.contact_info }}</p>
+  </div>
+  <div class="hero-stats">
+    <!-- Quick stats for participant -->
+    <div><span>Status: </span><strong>{{ participant.status }}</strong></div>
+    <div><span>Enrollments: </span><strong>{{ enrollments.count }}</strong></div>
+    <div><span>Visits:</span><strong>{{ visits.count }}</strong></div>
+  </div>
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Participant profile</h3>
+    </div>
+    <dl class="detail-list">
+      <!-- Participant details -->
+      <div><dt>First name</dt><dd>{{ participant.first_name }}</dd></div>
+      <div><dt>Last name</dt><dd>{{ participant.last_name }}</dd></div>
+      <div><dt>Date of birth</dt><dd>{{ participant.date_of_birth }}</dd></div>
+      <div><dt>Contact info</dt><dd>{{ participant.contact_info }}</dd></div>
+      <div><dt>Status</dt><dd>{{ participant.status }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Study enrollments</h3>
+    </div>
+    <div class="stack-list">
+      <!-- List of studies participant is enrolled in -->
+      {% for enrollment in enrollments %}
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <a class="list-row" href="{% url 'project_study_detail' enrollment.study.id %}">
+            <div>
+              <strong>{{ enrollment.study.title }}</strong>
+              <p>{{ enrollment.study.protocol_number }}</p>
+            </div>
+            <div class="row-meta">
+              <span>{{ enrollment.screening_status }}</span>
+              <span>{{ enrollment.enrollment_date }}</span>
+            </div>
+          </a>
+          <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link" style="margin-left: 1em;">Edit Enrollment</a>
+        </div>
+      {% empty %}
+        <p class="empty-state">This participant is not enrolled in any studies yet.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h3>Visit timeline</h3>
+  </div>
+    <div class="stack-list">
+      {% for visit in visits %}
+        <a class="list-row" href="{% url 'project_visit_detail' visit.id %}">
+          <div>
+            <strong>{{ visit.visit_type }}</strong>
+            <p>{{ visit.enrollment.study.title }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ visit.visit_date|date:"M j, Y" }}</span>
+            <span>{{ visit.visit_date|date:"g:i A" }}</span>
+            <span class="badge">{{ visit.status }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No visits scheduled for this participant.</p>
+      {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "project/base.html" %}
+{% block page_title %}Visit Calendar{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-header">
+    <h3>Weekly visit calendar</h3>
+    <span class="subtle">Review scheduled visits across studies and participants.</span>
+    <a href="{% url 'project_visit_add' %}" class="button-link" style="float:right;">Add Visit</a>
+  </div>
+  <div class="table-shell">
+    <table>
+      <thead>
+        <tr>
+          <!-- Table headers for visit calendar -->
+          <th>Date</th>
+          <th>Visit</th>
+          <th>Participant</th>
+          <th>Study</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through visits for calendar -->
+        {% for visit in visits %}
+          <tr>
+            <td>{{ visit.visit_date|date:"M j, Y g:i A" }}</td>
+            <td><a href="{% url 'project_visit_detail' visit.id %}">{{ visit.visit_type }}</a></td>
+            <td><a href="{% url 'project_participant_detail' visit.enrollment.participant.id %}">{{ visit.enrollment.participant }}</a></td>
+            <td><a href="{% url 'project_study_detail' visit.enrollment.study.id %}">{{ visit.enrollment.study.title }}</a></td>
+            <td>{{ visit.status }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No visits scheduled.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

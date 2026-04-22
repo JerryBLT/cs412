@@ -1,0 +1,61 @@
+<!-- file: project/templates/project/base.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/18/2026 -->
+<!-- Description: Base template for the project -->
+
+{% load static %}
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Meta and title for responsive design and page context -->
+    <title>{% block page_title %}Clinical Research Ops{% endblock %} | Clinical Research Ops</title>
+    <link rel="stylesheet" href="{% static 'project.css' %}">
+  </head>
+
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+        <!-- Sidebar with branding and navigation links -->
+          <p class="eyebrow">Clinical research participant scheduling</p>
+          <h1>Visit Management System</h1>
+          <p class="brand-copy">Scheduling and visit operations for coordinators, site managers, and investigators.</p>
+        </div>
+
+        <nav class="nav">
+          <a href="{% url 'project_dashboard' %}">Dashboard</a>
+          <!-- Main navigation links -->
+          <a href="{% url 'project_study_list' %}">Studies</a>
+          <a href="{% url 'project_participant_list' %}">Participants</a>
+          <a href="{% url 'project_visit_calendar' %}">Visit Calendar</a>
+          <a href="{% url 'project_scheduling_hub' %}">Scheduling Workspace</a>
+        </nav>
+
+        <section class="status-card">
+          <p class="status-label">Site pulse</p>
+          <!-- Site status information -->
+          <strong>Boston Research Center</strong>
+        </section>
+      </aside>
+
+      <main class="main-content">
+        
+        <!-- Main content area for each page -->
+        <header class="page-header">
+          <div>
+            <!-- Section header and page title -->
+            <p class="eyebrow">Operations</p>
+            <h2>{% block page_title_header %}Clinical Research Ops{% endblock %}</h2>
+          </div>
+
+          <div class="header-actions">
+            <!-- Contextual header actions -->
+            <span class="pill">Coordinator view</span>
+            <span class="pill muted">Scheduling workflow</span>
+          </div>
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

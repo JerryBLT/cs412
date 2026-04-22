@@ -1,0 +1,72 @@
+{% extends "project/base.html" %}
+{% block page_title %}Visit Details{% endblock %}
+
+{% block content %}
+<section class="detail-hero">
+  <div>
+    <!-- Visit header and participant/study info -->
+    <p class="eyebrow">Visit</p>
+    <h3>{{ visit.visit_type }}</h3>
+    <p>{{ visit.enrollment.participant }} &bull; {{ visit.enrollment.study.title }}</p>
+  </div>
+  <div class="hero-stats">
+    <!-- Visit date, time, and status -->
+    <span>
+      <span class="hero-label">Date:</span>
+      <strong class="hero-value">{{ visit.visit_date|date:"M j, Y" }}</strong>
+    </span>
+    <span>
+      <span class="hero-label">Time:</span>
+      <strong class="hero-value">{{ visit.visit_date|date:"g:i A" }}</strong>
+    </span>
+    <span>
+      <span class="hero-label">Status:</span>
+      <strong class="hero-value status-{{ visit.status|lower }}">{{ visit.status }}</strong>
+    </span>
+  </div>
+    <div style="margin-bottom: 1em;">
+    <a href="{% url 'project_visit_edit' visit.id %}" class="button-link">Edit Visit</a>
+  </div>
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Visit logistics</h3>
+    </div>
+    <dl class="detail-list">
+      <!-- Visit logistics details -->
+      <div><dt>Participant</dt><dd><a href="{% url 'project_participant_detail' visit.enrollment.participant.id %}">{{ visit.enrollment.participant }}</a></dd></div>
+      <div><dt>Study</dt><dd><a href="{% url 'project_study_detail' visit.enrollment.study.id %}">{{ visit.enrollment.study.title }}</a></dd></div>
+      <div><dt>Enrollment date</dt><dd>{{ visit.enrollment.enrollment_date }}</dd></div>
+      <div><dt>Screening status</dt><dd>{{ visit.enrollment.screening_status }}</dd></div>
+      <div><dt>Notes</dt><dd>{{ visit.notes }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Enrollment context</h3>
+    </div>
+    <dl class="detail-list">
+      <div><dt>Consent date</dt><dd>{{ visit.enrollment.consent_date }}</dd></div>
+      <div><dt>Visit status</dt><dd>{{ visit.status }}</dd></div>
+    </dl>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h3>Source documents</h3>
+  </div>
+  <div class="chip-row">
+    {% for document in documents %}
+      <span class="doc-chip">
+        <a href="{{ document.file.url }}" target="_blank">{{ document.title }}</a>
+      </span>
+    {% empty %}
+      <p class="empty-state">No visit documents uploaded.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

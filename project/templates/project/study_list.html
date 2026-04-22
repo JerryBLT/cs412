@@ -1,0 +1,45 @@
+{% extends "project/base.html" %}
+{% block page_title %}Studies{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3>Open study portfolio</h3>
+      <span class="subtle">Review recruiting load, coordinator ownership, and near-term visit demand.</span>
+    </div>
+    <div>
+      <a href="{% url 'project_study_add' %}" class="button-link" style="margin-right: 0.5em;">Add Study</a>
+      <a href="{% url 'project_enrollment_add' %}" class="button-link">Add Enrollment</a>
+    </div>
+  </div>
+  <div class="card-grid">
+    <!-- List of studies in portfolio -->
+    {% for study in studies %}
+      <div class="study-card">
+        <div class="study-card-header">
+          <div class="study-card-title-group">
+            <div class="study-protocol">{{ study.protocol_number }}</div>
+            <div class="study-card-title">{{ study.title }}</div>
+          </div>
+          <div class="study-card-actions">
+            <a href="{% url 'project_study_edit' study.id %}" class="btn btn-sm btn-secondary">Edit</a>
+            <a href="{% url 'project_study_delete' study.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </div>
+        </div>
+        <div class="study-card-content">
+          <p>{{ study.description }}</p>
+          <dl class="detail-list">
+            <!-- Study card details -->
+            <div><dt>Protocol</dt><dd>{{ study.protocol_number }}</dd></div>
+            <div><dt>Status</dt><dd>{{ study.status }}</dd></div>
+            <div><dt>Enrollments</dt><dd>{{ study.enrollment_count }}</dd></div>
+          </dl>
+        </div>
+      </div>
+    {% empty %}
+      <p class="empty-state">No studies available.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

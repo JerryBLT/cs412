@@ -1,0 +1,53 @@
+{% extends "project/base.html" %}
+{% block page_title %}Scheduling Workspace{% endblock %}
+
+{% block content %}
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Room assignment board</h3>
+      <span class="subtle">Use this workspace to manage room assignments, time windows, and coordinator coverage.</span>
+    </div>
+    <div class="stack-list">
+      <!-- List of visits for room assignment -->
+      {% for visit in visits %}
+        <a class="list-row" href="{% url 'project_visit_detail' visit.id %}">
+          <div>
+            <strong>{{ visit.visit_date|date:"M j, Y g:i A" }}</strong>
+            <p>{{ visit.visit_type }} for {{ visit.enrollment.participant }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ visit.enrollment.study.title }}</span>
+            <span class="badge">{{ visit.status }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No visits to schedule yet.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Study queue</h3>
+    </div>
+    <div class="stack-list">
+      <!-- List of studies for scheduling -->
+      {% for study in studies %}
+        <a class="list-row" href="{% url 'project_study_detail' study.id %}">
+          <div>
+            <strong>{{ study.title }}</strong>
+            <p>{{ study.protocol_number }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ study.status }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No studies available for scheduling.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "project/base.html" %}
+{% block page_title %}Participants{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3>Study Participants</h3>
+      <span class="subtle">Use this screen to test search-style browsing, risk review, and next-visit planning.</span>
+    </div>
+    <div>
+      <a href="{% url 'project_participant_add' %}" class="button-link">Add Participant</a>
+    </div>
+  </div>
+  <div class="table-shell">
+    <table>
+      <thead>
+        <tr>
+          <!-- Table headers for participant list -->
+          <th>Participant</th>
+          <th>Study</th>
+          <th>Screening Status</th>
+          <th>Next Visit</th>
+          <th>Risk Flag</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loop through participants and their enrollments -->
+          {% for participant in participants %}
+            {% with enrollments=participant.enrollment_set.all %}
+              {% if enrollments %}
+                {% for enrollment in enrollments %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'project_participant_detail' participant.id %}">
+                        {{ participant }}
+                      </a>
+                    </td>
+                    <td>{{ enrollment.study.title }}</td>
+                    <td>{{ enrollment.screening_status }}</td>
+                    <td>
+                      <!-- Show next visit date if available -->
+                      {% with next_visit=enrollment.visit_set.all|dictsort:'visit_date'|first %}
+                        {% if next_visit %}
+                          {{ next_visit.visit_date|date:"M j, Y" }}
+                        {% else %}
+                          No visits
+                        {% endif %}
+                      {% endwith %}
+                    </td>
+                    <td>
+                      <!-- Show risk flag for next visit if pending -->
+                      {% with next_visit=enrollment.visit_set.all|dictsort:'visit_date'|first %}
+                        {% if next_visit %}
+                          {% if next_visit.status == "Pending" %}
+                            Medium
+                          {% elif next_visit.status == "Missed" %}
+                            High
+                          {% else %}
+                            Low
+                          {% endif %}
+                        {% else %}
+                          Low
+                        {% endif %}
+                      {% endwith %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td>
+                    <a href="{% url 'project_participant_detail' participant.id %}">
+                      {{ participant }}
+                    </a>
+                  </td>
+                  <td>No study</td>
+                  <td>-</td>
+                  <td>No visits</td>
+                  <td>Low</td>
+                </tr>
+              {% endif %}
+            {% endwith %}
+          {% empty %}
+            <tr>
+              <td colspan="6">No participants available.</td>
+            </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

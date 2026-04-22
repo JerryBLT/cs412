@@ -1,0 +1,90 @@
+{% extends "project/base.html" %}
+{% block page_title %}Study Details{% endblock %}
+
+{% block content %}
+<section class="detail-hero">
+  <div>
+    <!-- Study header and description -->
+    <p class="eyebrow">{{ study.protocol_number }}</p>
+    <h3>{{ study.title }}</h3>
+    <p>{{ study.description }}</p>
+  </div>
+  <div class="hero-stats">
+    <!-- Study stats overview -->
+    <div><strong>{{ enrollments.count }}</strong><span>Enrollments</span></div>
+    <div><strong>{{ visits.count }}</strong><span>Visits</span></div>
+    <div><strong>{{ study.status }}</strong><span>Status</span></div>
+  </div>
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Study details</h3>
+    </div>
+    <dl class="detail-list">
+      <!-- Study detail fields -->
+      <div><dt>Status</dt><dd>{{ study.status }}</dd></div>
+      <div><dt>Protocol number</dt><dd>{{ study.protocol_number }}</dd></div>
+      <div><dt>Description</dt><dd>{{ study.description }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="panel">
+    <div class="panel-header">
+      <h3>Enrolled participants</h3>
+    </div>
+    <div class="stack-list">
+      <!-- List of enrolled participants -->
+      {% for enrollment in enrollments %}
+        <a class="list-row" href="{% url 'project_participant_detail' enrollment.participant.id %}">
+          <div>
+            <strong>{{ enrollment.participant }}</strong>
+            <p>Consent: {{ enrollment.consent_date }}</p>
+          </div>
+          <div class="row-meta">
+            <span>{{ enrollment.screening_status }}</span>
+            <span>Enrolled {{ enrollment.enrollment_date }}</span>
+          </div>
+        </a>
+      {% empty %}
+        <p class="empty-state">No enrollments for this study yet.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h3>Upcoming visits for this protocol</h3>
+  </div>
+  <div class="table-shell">
+    <table>
+      <thead>
+        <tr>
+          <th>Participant</th>
+          <th>Visit</th>
+          <th>Date</th>
+          <th>Room</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for visit in visits %}
+          <tr>
+            <td><a href="{% url 'project_participant_detail' visit.enrollment.participant.id %}">{{ visit.enrollment.participant }}</a></td>
+            <td><a href="{% url 'project_visit_detail' visit.id %}">{{ visit.visit_type }}</a></td>
+            <td>{{ visit.visit_date|date:"M j, Y" }} • {{ visit.visit_date|date:"g:i A" }}</td>
+            <td>{{ visit.notes|truncatechars:40 }}</td>
+            <td>{{ visit.status }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No visits for this study yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
