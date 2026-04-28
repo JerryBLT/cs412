@@ -22,12 +22,28 @@
         </div>
 
         <nav class="nav">
-          <a href="{% url 'project_dashboard' %}">Dashboard</a>
-          <!-- Main navigation links -->
-          <a href="{% url 'project_study_list' %}">Studies</a>
-          <a href="{% url 'project_participant_list' %}">Participants</a>
-          <a href="{% url 'project_visit_calendar' %}">Visit Calendar</a>
-          <a href="{% url 'project_scheduling_hub' %}">Scheduling Workspace</a>
+          <!-- <a href="{% url 'project_home' %}">Home</a> -->
+
+          {% if request.user.is_authenticated %}
+            {% if request.user.userprofile.role == 'coordinator' %}
+              <a href="{% url 'project_dashboard' %}">Dashboard</a>
+              <a href="{% url 'project_study_list' %}">Studies</a>
+              <a href="{% url 'project_participant_list' %}">Participants</a>
+              <a href="{% url 'project_visit_calendar' %}">Visit Calendar</a>
+              <a href="{% url 'project_scheduling_hub' %}">Scheduling Workspace</a>
+            {% elif request.user.userprofile.role == 'participant' %}
+              <a href="{% url 'my_profile' %}">My Profile</a>
+              <a href="{% url 'my_enrollments' %}">My Enrollments</a>
+              <a href="{% url 'my_visits' %}">My Visits</a>
+            {% endif %}
+
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
+          {% else %}
+            <a href="{% url 'login' %}">Login</a>
+          {% endif %}
         </nav>
 
         <section class="status-card">
@@ -48,8 +64,14 @@
           </div>
 
           <div class="header-actions">
-            <!-- Contextual header actions -->
-            <span class="pill">Coordinator view</span>
+            {% if request.user.is_authenticated %}
+              {% if request.user.userprofile.role == 'coordinator' %}
+                <span class="pill">Coordinator view</span>
+              {% elif request.user.userprofile.role == 'participant' %}
+                <span class="pill">Participant view</span>
+              {% endif %}
+            {% endif %}
+
             <span class="pill muted">Scheduling workflow</span>
           </div>
         </header>

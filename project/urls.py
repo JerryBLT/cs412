@@ -1,10 +1,13 @@
 from django.urls import path
 from .views import *
+from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 # URL patterns for all main project views (CRUD + navigation)
 urlpatterns = [
-    # Dashboard
-    path("", DashboardView.as_view(), name="project_dashboard"),
+    # Homepage and Dashboard
+    path("", HomeView.as_view(), name="project_home"),
+    path("dashboard/", DashboardView.as_view(), name="project_dashboard"),
 
     # Study CRUD
     path("studies/", StudyListView.as_view(), name="project_study_list"),
@@ -31,4 +34,15 @@ urlpatterns = [
 
     # Scheduling workspace
     path("scheduling/", SchedulingHubView.as_view(), name="project_scheduling_hub"),
+
+    # Participant-only views
+    path("my/profile/", MyProfileView.as_view(), name="my_profile"),
+    path("my/profile/edit/", MyProfileUpdateView.as_view(), name="my_profile_edit"),
+    path("my/enrollments/", MyEnrollmentsView.as_view(), name="my_enrollments"),
+    path("my/visits/", MyVisitsView.as_view(), name="my_visits"),
+
+    # Authentication views
+    path("login/", auth_views.LoginView.as_view(template_name="project/login.html"), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(next_page="logout_confirmation"), name="logout"),
+    path("logout_confirmation/", TemplateView.as_view(template_name="project/logged_out.html"), name="logout_confirmation"),
 ]

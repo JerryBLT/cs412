@@ -1,8 +1,12 @@
+<!-- File: project/templates/project/dashboard.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/22/2026 -->
+<!-- Description: Operations dashboard for project coordinators and staff -->
 {% extends "project/base.html" %}
 {% block page_title %}Operations Dashboard{% endblock %}
 
 {% block content %}
 <section class="hero">
+
   <div>
     <!-- Dashboard hero section -->
     <p class="eyebrow">Today at a glance</p>
@@ -31,11 +35,13 @@
 </section>
 
 <section class="content-grid">
+
   <article class="panel">
     <div class="panel-header">
       <h3>Upcoming visits</h3>
       <a href="{% url 'project_visit_calendar' %}">Open calendar</a>
     </div>
+   
     <div class="stack-list">
       <!-- List of upcoming visits -->
       {% for visit in recent_visits %}
@@ -66,7 +72,7 @@
         <a class="list-row" href="{% url 'project_participant_detail' participant.id %}">
           <div>
             <strong>{{ participant }}</strong>
-            <p>{{ participant.contact_info }}</p>
+            <p>{{ participant.email }}</p>
           </div>
           <div class="row-meta">
             <span>{{ participant.status }}</span>
@@ -80,6 +86,7 @@
 </section>
 
 <section class="panel">
+
   <div class="panel-header">
     <h3>Study portfolio</h3>
     <a href="{% url 'project_study_list' %}">All studies</a>
@@ -99,5 +106,6 @@
       <p class="empty-state">No studies yet. Add studies to begin building the schedule.</p>
     {% endfor %}
   </div>
+  
 </section>
 {% endblock %}

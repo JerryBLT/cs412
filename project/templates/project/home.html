@@ -1,0 +1,25 @@
+<!-- File: project/templates/project/home.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/22/2026 -->
+<!-- Description: Home page for the Clinical Research Management System -->
+{% extends "project/base.html" %}
+{% block content %}
+  <section class="hero" style="margin-bottom: 32px;">
+    <div>
+      <p class="eyebrow">Welcome</p>
+      <h1>Clinical Research Management System</h1>
+      <p class="hero-copy">
+        Manage studies, participants, and visits securely. Streamline your research operations with modern scheduling, oversight, and participant engagement tools.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Get Started</h2>
+    {% if not request.user.is_authenticated %}
+      <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    {% else %}
+      <a href="{% url 'project_dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+    {% endif %}
+    <p class="subtle">Need help? Contact administrator.</p>
+  </section>
+{% endblock %}

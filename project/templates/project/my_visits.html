@@ -1,0 +1,32 @@
+{% extends "project/base.html" %}
+{% block page_title %}My Visits{% endblock %}
+
+{% block content %}
+<section class="panel visits-panel">
+  <h2>My Visits</h2>
+  {% if visits %}
+    <div class="visit-cards">
+      {% for visit in visits %}
+        <div class="visit-card">
+          <div class="visit-card-header">
+            <div class="visit-study">{{ visit.study_title }}</div>
+            <span class="badge visit-badge visit-{{ visit.status }}">{{ visit.get_status_display }}</span>
+          </div>
+          <div class="visit-type"><strong>{{ visit.visit_type }}</strong></div>
+          <div class="visit-meta">
+            <strong>Date:</strong> {{ visit.visit_date|date:'M j, Y, g:i a' }}
+          </div>
+          {% if visit.notes %}
+            <div class="visit-notes"><strong>Notes:</strong> {{ visit.notes }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">📅</div>
+      <div>No visits scheduled or completed yet.</div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

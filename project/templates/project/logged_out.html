@@ -1,0 +1,11 @@
+{% extends "project/base.html" %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-header">
+    <h3>Logged Out</h3>
+  </div>
+  <p>You have been successfully logged out.</p>
+  <a href="{% url 'project_home' %}"><button>Return to Home</button></a>
+</section>
+{% endblock %}

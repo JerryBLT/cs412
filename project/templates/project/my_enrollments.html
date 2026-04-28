@@ -1,0 +1,30 @@
+{% extends "project/base.html" %}
+{% block page_title %}My Enrollments{% endblock %}
+
+{% block content %}
+<section class="panel enrollments-panel">
+  <h2>My Study Enrollments</h2>
+  {% if enrollments %}
+    <div class="enrollment-cards">
+      {% for enrollment in enrollments %}
+        <div class="enrollment-card">
+          <div class="enrollment-card-header">
+            <h3 class="enrollment-title">{{ enrollment.study.title }}</h3>
+            {% if enrollment.study.protocol_number %}
+              <div class="enrollment-protocol">Protocol: {{ enrollment.study.protocol_number }}</div>
+            {% endif %}
+            <span class="badge screening-badge screening-{{ enrollment.screening_status }}">{{ enrollment.get_screening_status_display }}</span>
+          </div>
+          <div class="enrollment-meta">
+            <strong>Enrollment Date:</strong> {{ enrollment.enrollment_date|date:"M j, Y" }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div>You are not enrolled in any studies yet.</div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -17,8 +17,13 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: Georgia, "Times New Roman", serif;
   color: var(--text);
   background:
@@ -32,10 +37,13 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
   letter-spacing: -0.02em;
-  margin: 0;
 }
 
 /* Layout */
@@ -52,6 +60,8 @@ h1, h2, h3, h4 {
   padding: 32px 24px;
   background: linear-gradient(180deg, #173d45 0%, #102f35 100%);
   color: #f7efe5;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content {
@@ -144,7 +154,7 @@ form {
   margin-bottom: 12px;
 }
 
-/* Typography / small text */
+/* Typography */
 .eyebrow,
 .status-label {
   text-transform: uppercase;
@@ -173,7 +183,8 @@ form {
 .status-card span,
 .study-protocol,
 .row-meta,
-.hero-label {
+.hero-label,
+.empty-state {
   color: var(--muted);
 }
 
@@ -203,27 +214,13 @@ form {
   text-transform: capitalize;
 }
 
-.hero-value.status-completed { color: #2e7d32; }
-.hero-value.status-missed { color: #c62828; }
-.hero-value.status-pending { color: #f9a825; }
-.hero-value.status-scheduled { color: #1976d2; }
-.hero-value.status-canceled { color: #757575; }
-
 .metric-card strong,
 .hero-stats strong {
   font-size: 1.9rem;
   color: var(--navy);
 }
 
-/* Hero / card helpers */
-.hero-panel {
-  min-width: 260px;
-  padding: 20px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, rgba(214, 106, 77, 0.12), rgba(199, 155, 69, 0.1));
-  border: 1px solid rgba(214, 106, 77, 0.22);
-}
-
+/* Header helpers */
 .header-actions,
 .study-meta,
 .chip-row,
@@ -242,6 +239,14 @@ form {
   margin-top: 1.5rem;
 }
 
+.hero-panel {
+  min-width: 260px;
+  padding: 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(214, 106, 77, 0.12), rgba(199, 155, 69, 0.1));
+  border: 1px solid rgba(214, 106, 77, 0.22);
+}
+
 .study-card-title-group {
   display: flex;
   flex-direction: column;
@@ -258,10 +263,22 @@ form {
   margin: 0;
 }
 
-/* Pills / chips / badges */
+/* Sidebar */
+.status-card {
+  margin-top: auto;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 250, 244, 0.1);
+  border: 1px solid rgba(255, 250, 244, 0.12);
+}
+
+/* Pills / badges / chips */
 .pill,
 .badge,
-.doc-chip {
+.doc-chip,
+.status-badge,
+.screening-badge,
+.visit-badge {
   display: inline-flex;
   align-items: center;
   padding: 7px 12px;
@@ -273,6 +290,79 @@ form {
 .pill.muted,
 .badge.danger {
   background: #efd5cb;
+}
+
+/* Status colors */
+.status-active {
+  background: #e6f7e6;
+  color: #217a3c;
+}
+
+.status-withdrawn,
+.status-inactive {
+  background: #fbeaea;
+  color: #b2493d;
+}
+
+.status-completed {
+  background: #e6eaf7;
+  color: #2f4f7f;
+}
+
+.screening-badge.screening-eligible {
+  background: #e6f7e6;
+  color: #217a3c;
+}
+
+.screening-badge.screening-ineligible,
+.screening-badge.screening-screen_failed {
+  background: #fbeaea;
+  color: #b2493d;
+}
+
+.screening-badge.screening-pending {
+  background: #f7f7e6;
+  color: #c79b45;
+}
+
+.visit-badge.visit-completed {
+  background: #e6f7e6;
+  color: #217a3c;
+}
+
+.visit-badge.visit-missed {
+  background: #fbeaea;
+  color: #b2493d;
+}
+
+.visit-badge.visit-scheduled {
+  background: #e6eaf7;
+  color: #2f4f7f;
+}
+
+.visit-badge.visit-canceled {
+  background: #f7f7e6;
+  color: #c79b45;
+}
+
+.hero-value.status-completed {
+  color: #2e7d32;
+}
+
+.hero-value.status-missed {
+  color: #c62828;
+}
+
+.hero-value.status-pending {
+  color: #f9a825;
+}
+
+.hero-value.status-scheduled {
+  color: #1976d2;
+}
+
+.hero-value.status-canceled {
+  color: #757575;
 }
 
 /* Button system */
@@ -415,14 +505,6 @@ button[type="submit"]:active {
 }
 
 /* Cards / rows */
-.status-card {
-  margin-top: auto;
-  padding: 18px;
-  border-radius: 22px;
-  background: rgba(255, 250, 244, 0.1);
-  border: 1px solid rgba(255, 250, 244, 0.12);
-}
-
 .list-row {
   padding: 18px;
   border-radius: 20px;
@@ -442,6 +524,70 @@ button[type="submit"]:active {
     linear-gradient(180deg, rgba(18, 52, 59, 0.02), rgba(47, 127, 122, 0.08)),
     var(--panel);
   border: 1px solid var(--line);
+}
+
+.profile-panel,
+.enrollments-panel,
+.visits-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.profile-card,
+.enrollment-card,
+.visit-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.profile-header,
+.enrollment-card-header,
+.visit-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.profile-name,
+.enrollment-title,
+.visit-type {
+  color: var(--navy);
+}
+
+.profile-contact,
+.profile-summary,
+.visit-meta {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-summary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-summary-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.profile-actions,
+.enrollment-cards,
+.visit-cards,
+.visit-notes,
+.empty-icon {
+  display: grid;
+  gap: 14px;
+}
+
+.visit-study,
+.enrollment-protocol {
+  color: var(--muted);
+  font-weight: 600;
 }
 
 /* Detail list */
@@ -522,6 +668,7 @@ input,
 select,
 textarea,
 .scheduler-form input {
+  width: 100%;
   font: inherit;
   font-size: 1rem;
   padding: 11px 16px;
@@ -568,6 +715,10 @@ textarea:focus,
     position: relative;
     height: auto;
   }
+
+  .profile-summary {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 720px) {
@@ -578,7 +729,10 @@ textarea:focus,
   .page-header,
   .hero,
   .detail-hero,
-  .study-card-header {
+  .study-card-header,
+  .profile-header,
+  .enrollment-card-header,
+  .visit-card-header {
     flex-direction: column;
   }
 

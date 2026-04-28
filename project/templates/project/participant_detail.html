@@ -9,7 +9,10 @@
     <h3>{{ participant }}
       <a href="{% url 'project_participant_edit' participant.id %}" class="button-link" style="font-size:1rem; margin-left:1rem;">Edit</a>
     </h3>
-    <p>{{ participant.contact_info }}</p>
+    <p>
+      <strong>Phone:</strong> {{ participant.phone }}<br>
+      <strong>Email:</strong> {{ participant.email }}
+    </p>
   </div>
   <div class="hero-stats">
     <!-- Quick stats for participant -->
@@ -29,7 +32,9 @@
       <div><dt>First name</dt><dd>{{ participant.first_name }}</dd></div>
       <div><dt>Last name</dt><dd>{{ participant.last_name }}</dd></div>
       <div><dt>Date of birth</dt><dd>{{ participant.date_of_birth }}</dd></div>
-      <div><dt>Contact info</dt><dd>{{ participant.contact_info }}</dd></div>
+      <div><dt>Age</dt><dd>{{ participant.age }}</dd></div>
+      <div><dt>Phone</dt><dd>{{ participant.phone }}</dd></div>
+      <div><dt>Email</dt><dd>{{ participant.email }}</dd></div>
       <div><dt>Status</dt><dd>{{ participant.status }}</dd></div>
     </dl>
   </article>

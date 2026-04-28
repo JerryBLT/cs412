@@ -12,12 +12,39 @@
       <a href="{% url 'project_participant_add' %}" class="button-link">Add Participant</a>
     </div>
   </div>
+  <form method="get" class="participant-filters" style="margin-bottom: 1em; display: flex; gap: 1em; align-items: center;">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search by name"
+      value="{{ search_query }}"
+      style="min-width: 180px;"
+    />
+
+    <select name="study">
+      <option value="">All Studies</option>
+      {% for study in studies %}
+        <option value="{{ study.id }}" {% if study.id|stringformat:"s" == selected_study %}selected{% endif %}>{{ study.title }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="screening_status">
+      <option value="">All Screening Statuses</option>
+      {% for value, label in screening_status_choices %}
+        <option value="{{ value }}" {% if value == selected_screening_status %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a href="{% url 'project_participant_list' %}" class="btn btn-secondary" style="margin-left: 0.5em;">Clear</a>
+  </form>
   <div class="table-shell">
     <table>
       <thead>
         <tr>
           <!-- Table headers for participant list -->
           <th>Participant</th>
+          <th>Age</th>
           <th>Study</th>
           <th>Screening Status</th>
           <th>Next Visit</th>
@@ -37,6 +64,7 @@
                         {{ participant }}
                       </a>
                     </td>
+                    <td>{{ participant.age }}</td>
                     <td>{{ enrollment.study.title }}</td>
                     <td>{{ enrollment.screening_status }}</td>
                     <td>

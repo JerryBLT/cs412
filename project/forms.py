@@ -13,7 +13,7 @@ class StudyForm(forms.ModelForm):
 class ParticipantForm(forms.ModelForm):
     class Meta:
         model = Participant
-        fields = ["first_name", "last_name", "date_of_birth", "contact_info", "status"]
+        fields = ["first_name", "last_name", "date_of_birth", "status"]
 
 class EnrollmentForm(forms.ModelForm):
     class Meta:
@@ -24,3 +24,8 @@ class VisitForm(forms.ModelForm):
     class Meta:
         model = Visit
         fields = ["enrollment", "visit_date", "visit_type", "status", "notes"]
+
+class ParticipantSelfEditForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ["phone", "email"]
