@@ -25,6 +25,11 @@ class StudyForm(forms.ModelForm):
 
 class ParticipantForm(forms.ModelForm):
     '''Form for creating or updating a participant. Includes fields for name, date'''
+
+    create_user_account = forms.BooleanField(required=False, label="Create login account for participant")
+    username = forms.CharField(required=False, label="Username")
+    password = forms.CharField(required=False, widget=forms.PasswordInput, label="Password")
+
     class Meta:
         model = Participant
         fields = ["first_name", "last_name", "date_of_birth", "sex", "phone", "email", "status"]
@@ -37,6 +42,21 @@ class ParticipantForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        create_user = cleaned_data.get("create_user_account")
+        email = cleaned_data.get("email")
+        username = cleaned_data.get("username")
+        password = cleaned_data.get("password")
+        if create_user:
+            if not username:
+                self.add_error("username", "Username is required to create a user account.")
+            if not email:
+                self.add_error("email", "Email is required to create a user account.")
+            if not password:
+                self.add_error("password", "Password is required.")
+        return cleaned_data
 
 class EnrollmentForm(forms.ModelForm):
     '''Form for creating or updating an enrollment. Includes fields for participant, study, consent date, screening status, and enrollment date.'''

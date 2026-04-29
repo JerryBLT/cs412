@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from .models import Enrollment, Participant, Study, Visit, VisitDocument
 from .forms import ParticipantForm, EnrollmentForm, VisitForm, StudyForm, ParticipantSelfEditForm, VisitDocumentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from .models import UserProfile
 
 # ================= Permission Mixins =================
 class CoordinatorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -215,6 +217,28 @@ class ParticipantCreateView(CoordinatorRequiredMixin, CreateView):
     form_class = ParticipantForm
     template_name = "project/object_form.html"
 
+
+    def form_valid(self, form):
+        '''Overrides form_valid to create a user account for the participant if the option is selected in the form, and then proceeds with the normal form saving process.'''
+        response = super().form_valid(form)
+        create_user = form.cleaned_data.get("create_user_account")
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password")
+        email = form.cleaned_data.get("email")
+        if create_user and username and email and password:
+            # Prevent duplicate users
+            if not User.objects.filter(username=username).exists():
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    first_name=form.cleaned_data.get("first_name", ""),
+                    last_name=form.cleaned_data.get("last_name", "")
+                )
+                profile = UserProfile.objects.create(user=user, role="participant", participant=self.object)
+            # else: could add error handling for duplicate user
+        return response
+
     def get_success_url(self):
         '''Redirects to the participant detail page after successful creation.'''
         return reverse_lazy("project_participant_detail", kwargs={"participant_id": self.object.id})
@@ -249,6 +273,7 @@ class ParticipantDeleteView(CoordinatorRequiredMixin, DeleteView):
 
 # --- Dashboard ---
 class DashboardView(LoginRequiredMixin, TemplateView):
+    '''Displays a dashboard with key metrics and recent activity for coordinators, and redirects participants to their profile page.'''
     template_name = "project/dashboard.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -282,6 +307,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 class StudyListView(CoordinatorRequiredMixin, ListView):
+    '''Displays a list of studies with enrollment counts and links to detail pages.'''
     model = Study
     template_name = "project/study_list.html"
     context_object_name = "studies"
@@ -291,6 +317,7 @@ class StudyListView(CoordinatorRequiredMixin, ListView):
         return Study.objects.annotate(enrollment_count=Count("enrollment")).order_by("title")
 
 class StudyDetailView(CoordinatorRequiredMixin, DetailView):
+    '''Displays detailed information about a specific study, including related enrollments and visits for context.'''
     model = Study
     template_name = "project/study_detail.html"
     context_object_name = "study"
@@ -313,6 +340,7 @@ class StudyDetailView(CoordinatorRequiredMixin, DetailView):
         return context
 
 class ParticipantListView(CoordinatorRequiredMixin, ListView):
+    '''Displays a list of participants with search and filter options for name, study enrollment, and screening status.'''
     model = Participant
     template_name = "project/participant_list.html"
     context_object_name = "participants"
@@ -346,6 +374,7 @@ class ParticipantListView(CoordinatorRequiredMixin, ListView):
         return context
 
 class ParticipantDetailView(CoordinatorRequiredMixin, DetailView):
+    '''Displays detailed information about a specific participant, including related enrollments and visits for context.'''
     model = Participant
     template_name = "project/participant_detail.html"
     context_object_name = "participant"
@@ -403,6 +432,7 @@ class VisitDetailView(CoordinatorRequiredMixin, DetailView):
         return context
 
 class SchedulingHubView(CoordinatorRequiredMixin, TemplateView):
+    '''Displays a scheduling hub dashboard with upcoming visits and recent studies for coordinators to manage scheduling and study oversight.'''
     template_name = "project/scheduling_hub.html"
 
     def get_context_data(self, **kwargs):
@@ -418,6 +448,7 @@ class SchedulingHubView(CoordinatorRequiredMixin, TemplateView):
 
 # ================= Participant-Specific Views =================
 class MyProfileView(ParticipantRequiredMixin, DetailView):
+    '''Displays the profile information of the logged-in participant, along with counts of their enrollments and visits for context.'''
     model = Participant
     template_name = "project/my_profile.html"
 
@@ -434,6 +465,7 @@ class MyProfileView(ParticipantRequiredMixin, DetailView):
         return context
 
 class MyEnrollmentsView(ParticipantRequiredMixin, ListView):
+    '''Displays a list of enrollments for the logged-in participant, annotated with study title for context.'''
     model = Enrollment
     template_name = "project/my_enrollments.html"
     context_object_name = "enrollments"
@@ -444,6 +476,7 @@ class MyEnrollmentsView(ParticipantRequiredMixin, ListView):
         return Enrollment.objects.filter(participant=participant).select_related("study").order_by("-enrollment_date")
 
 class MyVisitsView(ParticipantRequiredMixin, ListView):
+    '''Displays a list of visits for the logged-in participant, annotated with study title and related documents for context.'''
     model = Visit
     template_name = "project/my_visits.html"
     context_object_name = "visits"
