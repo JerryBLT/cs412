@@ -7,7 +7,8 @@
     <!-- Participant header and edit link -->
     <p class="eyebrow">Participant</p>
     <h3>{{ participant }}
-      <a href="{% url 'project_participant_edit' participant.id %}" class="button-link" style="font-size:1rem; margin-left:1rem;">Edit</a>
+      <a href="{% url 'project_participant_edit' participant.id %}" class="button-link button-link-inline">Edit</a>
+      <a href="{% url 'project_participant_delete' participant.id %}" class="button-link button-link-inline delete-link">Delete</a>
     </h3>
     <p>
       <strong>Phone:</strong> {{ participant.phone }}<br>
@@ -32,7 +33,7 @@
       <div><dt>First name</dt><dd>{{ participant.first_name }}</dd></div>
       <div><dt>Last name</dt><dd>{{ participant.last_name }}</dd></div>
       <div><dt>Date of birth</dt><dd>{{ participant.date_of_birth }}</dd></div>
-      <div><dt>Age</dt><dd>{{ participant.age }}</dd></div>
+      <div><dt>Age</dt><dd>{{ participant.age_calculated }}</dd></div>
       <div><dt>Phone</dt><dd>{{ participant.phone }}</dd></div>
       <div><dt>Email</dt><dd>{{ participant.email }}</dd></div>
       <div><dt>Status</dt><dd>{{ participant.status }}</dd></div>
@@ -46,7 +47,7 @@
     <div class="stack-list">
       <!-- List of studies participant is enrolled in -->
       {% for enrollment in enrollments %}
-        <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="enrollment-row-flex">
           <a class="list-row" href="{% url 'project_study_detail' enrollment.study.id %}">
             <div>
               <strong>{{ enrollment.study.title }}</strong>
@@ -58,6 +59,7 @@
             </div>
           </a>
           <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link" style="margin-left: 1em;">Edit Enrollment</a>
+                  <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link enrollment-edit-link">Edit Enrollment</a>
         </div>
       {% empty %}
         <p class="empty-state">This participant is not enrolled in any studies yet.</p>

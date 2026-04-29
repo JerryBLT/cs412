@@ -13,6 +13,7 @@
   --shadow: 0 18px 48px rgba(18, 52, 59, 0.12);
 }
 
+/* Reset */
 * {
   box-sizing: border-box;
 }
@@ -46,7 +47,7 @@ h4 {
   letter-spacing: -0.02em;
 }
 
-/* Layout */
+/* Main layout */
 .shell {
   display: grid;
   grid-template-columns: 290px 1fr;
@@ -68,6 +69,7 @@ h4 {
   padding: 28px;
 }
 
+/* Shared grid layouts */
 .nav,
 .stack-list,
 .metric-grid,
@@ -83,10 +85,6 @@ form {
 .nav {
   gap: 10px;
   margin: 36px 0;
-}
-
-.stack-list.compact {
-  gap: 10px;
 }
 
 .metric-grid,
@@ -110,7 +108,7 @@ form {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-/* Shared flex groups */
+/* Shared flex layouts */
 .page-header,
 .panel-header,
 .hero,
@@ -130,6 +128,20 @@ form {
   margin-bottom: 24px;
 }
 
+.header-actions,
+.study-meta,
+.chip-row,
+.hero-stats,
+.study-card-actions,
+.row-meta,
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Panels */
 .hero,
 .detail-hero,
 .panel,
@@ -141,17 +153,16 @@ form {
   box-shadow: var(--shadow);
 }
 
-.metric-card,
-.study-card,
-.day-card,
-.list-row {
-  flex-direction: column;
-}
-
-.study-card-header {
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 12px;
+.hero-panel {
+  min-width: 260px;
+  padding: 20px;
+  border-radius: 22px;
+  background: linear-gradient(
+    180deg,
+    rgba(214, 106, 77, 0.12),
+    rgba(199, 155, 69, 0.1)
+  );
+  border: 1px solid rgba(214, 106, 77, 0.22);
 }
 
 /* Typography */
@@ -184,33 +195,41 @@ form {
 .study-protocol,
 .row-meta,
 .hero-label,
-.empty-state {
+.empty-state,
+.visit-study,
+.enrollment-protocol {
   color: var(--muted);
 }
 
-.study-protocol {
+.study-protocol,
+.visit-study,
+.enrollment-protocol {
   font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
+.study-card-title,
+.profile-name,
+.enrollment-title,
+.visit-type {
+  color: var(--navy);
+}
+
 .study-card-title {
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--navy);
   word-break: break-word;
 }
 
 .hero-label {
   font-size: 1rem;
   margin-right: 0.25rem;
-  font-family: inherit;
 }
 
 .hero-value {
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: capitalize;
 }
 
@@ -220,50 +239,7 @@ form {
   color: var(--navy);
 }
 
-/* Header helpers */
-.header-actions,
-.study-meta,
-.chip-row,
-.hero-stats,
-.study-card-actions,
-.row-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.hero-stats {
-  align-items: baseline;
-  gap: 1.5rem;
-  font-size: 2rem;
-  margin-top: 1.5rem;
-}
-
-.hero-panel {
-  min-width: 260px;
-  padding: 20px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, rgba(214, 106, 77, 0.12), rgba(199, 155, 69, 0.1));
-  border: 1px solid rgba(214, 106, 77, 0.22);
-}
-
-.study-card-title-group {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.study-card-actions {
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.study-card-actions .btn {
-  margin: 0;
-}
-
-/* Sidebar */
+/* Sidebar status card */
 .status-card {
   margin-top: auto;
   padding: 18px;
@@ -272,7 +248,7 @@ form {
   border: 1px solid rgba(255, 250, 244, 0.12);
 }
 
-/* Pills / badges / chips */
+/* Pills, badges, chips */
 .pill,
 .badge,
 .doc-chip,
@@ -281,9 +257,12 @@ form {
 .visit-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: fit-content;
   padding: 7px 12px;
   border-radius: 999px;
   font-size: 0.85rem;
+  font-weight: 700;
   background: var(--panel-strong);
 }
 
@@ -293,76 +272,32 @@ form {
 }
 
 /* Status colors */
-.status-active {
-  background: #e6f7e6;
-  color: #217a3c;
-}
-
-.status-withdrawn,
-.status-inactive {
-  background: #fbeaea;
-  color: #b2493d;
-}
-
-.status-completed {
-  background: #e6eaf7;
-  color: #2f4f7f;
-}
-
-.screening-badge.screening-eligible {
-  background: #e6f7e6;
-  color: #217a3c;
-}
-
-.screening-badge.screening-ineligible,
-.screening-badge.screening-screen_failed {
-  background: #fbeaea;
-  color: #b2493d;
-}
-
-.screening-badge.screening-pending {
-  background: #f7f7e6;
-  color: #c79b45;
-}
-
+.status-active,
+.screening-badge.screening-eligible,
 .visit-badge.visit-completed {
   background: #e6f7e6;
   color: #217a3c;
 }
 
+.status-withdrawn,
+.status-inactive,
+.screening-badge.screening-ineligible,
+.screening-badge.screening-screen_failed,
 .visit-badge.visit-missed {
   background: #fbeaea;
   color: #b2493d;
 }
 
+.status-completed,
 .visit-badge.visit-scheduled {
   background: #e6eaf7;
   color: #2f4f7f;
 }
 
+.screening-badge.screening-pending,
 .visit-badge.visit-canceled {
   background: #f7f7e6;
   color: #c79b45;
-}
-
-.hero-value.status-completed {
-  color: #2e7d32;
-}
-
-.hero-value.status-missed {
-  color: #c62828;
-}
-
-.hero-value.status-pending {
-  color: #f9a825;
-}
-
-.hero-value.status-scheduled {
-  color: #1976d2;
-}
-
-.hero-value.status-canceled {
-  color: #757575;
 }
 
 /* Button system */
@@ -375,29 +310,25 @@ button[type="submit"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35em;
+  gap: 0.4em;
+  width: fit-content;
+  min-height: 42px;
   line-height: 1;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  padding: 0.75em 1em;
-  padding-right: 1.25em;
-  border-radius: 2em;
+  padding: 0.75em 1.15em;
+  border-radius: 999px;
   border: 1.5px solid transparent;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  transition: transform 0.3s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
-  outline: none;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
   box-shadow: 0 0.7em 1.5em -0.5em rgba(47, 127, 122, 0.25);
-}
-
-.btn__icon {
-  width: 1.5em;
-  height: 1.5em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .btn:hover,
@@ -406,7 +337,7 @@ button[type="submit"] {
 form button:hover,
 input[type="submit"]:hover,
 button[type="submit"]:hover {
-  border-color: #f4f5f2;
+  transform: translateY(-1px);
 }
 
 .btn:active,
@@ -416,7 +347,6 @@ form button:active,
 input[type="submit"]:active,
 button[type="submit"]:active {
   transform: scale(0.98);
-  box-shadow: 0 0.5em 1.5em -0.5em rgba(47, 127, 122, 0.25);
 }
 
 .btn-primary,
@@ -425,86 +355,61 @@ button[type="submit"]:active {
 form button,
 input[type="submit"],
 button[type="submit"] {
-  background: linear-gradient(90deg, var(--teal) 0%, var(--navy) 100%);
+  background: linear-gradient(90deg, var(--teal), var(--navy));
   color: #fff;
   border-color: var(--teal);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .btn-primary:hover,
-.btn-primary:focus,
 .button-link:hover,
-.button-link:focus,
 .scheduler-form button:hover,
-.scheduler-form button:focus,
 form button:hover,
-form button:focus,
 input[type="submit"]:hover,
-input[type="submit"]:focus,
-button[type="submit"]:hover,
-button[type="submit"]:focus {
-  background: linear-gradient(90deg, #256a67 0%, #12343b 100%);
+button[type="submit"]:hover {
+  background: linear-gradient(90deg, #256a67, #12343b);
   color: #fff;
-}
-
-.btn-primary:active,
-.button-link:active,
-.scheduler-form button:active,
-form button:active,
-input[type="submit"]:active,
-button[type="submit"]:active {
-  background: #256a67;
 }
 
 .btn-secondary {
-  background: linear-gradient(90deg, var(--panel-strong) 0%, var(--line) 100%);
+  background: linear-gradient(90deg, var(--panel-strong), var(--line));
   color: var(--navy);
-  border-color: var(--navy);
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.18);
+  border-color: var(--line);
 }
 
-.btn-secondary:hover,
-.btn-secondary:focus {
-  background: linear-gradient(90deg, var(--panel) 0%, var(--teal) 100%);
+.btn-secondary:hover {
+  background: linear-gradient(90deg, var(--panel), var(--teal));
   color: #fff;
   border-color: var(--teal);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-}
-
-.btn-secondary:active {
-  background: var(--line);
 }
 
 .btn-danger {
-  background: linear-gradient(90deg, var(--danger) 0%, #8d2e2e 100%);
+  background: linear-gradient(90deg, var(--danger), #8d2e2e);
   color: #fff;
   border-color: var(--danger);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
-.btn-danger:hover,
-.btn-danger:focus {
-  background: linear-gradient(90deg, #8d2e2e 0%, #6a2323 100%);
-  color: #fff;
-}
-
-.btn-danger:active {
-  background: #8d2e2e;
+.btn-danger:hover {
+  background: linear-gradient(90deg, #8d2e2e, #6a2323);
 }
 
 .btn-sm {
-  font-size: 0.92rem;
+  min-height: 34px;
+  font-size: 0.9rem;
   padding: 6px 14px;
-  border-radius: 999px;
 }
 
 .button-link {
   margin-top: 14px;
-  display: inline-flex;
-  width: fit-content;
 }
 
-/* Cards / rows */
+/* Cards */
+.metric-card,
+.study-card,
+.day-card,
+.list-row {
+  flex-direction: column;
+}
+
 .list-row {
   padding: 18px;
   border-radius: 20px;
@@ -526,9 +431,37 @@ button[type="submit"]:active {
   border: 1px solid var(--line);
 }
 
+.study-card-header {
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.study-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.study-card-actions {
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: auto;
+}
+
+.study-card-actions .btn {
+  margin: 0;
+}
+
+/* Profile, enrollment, and visit cards */
 .profile-panel,
 .enrollments-panel,
-.visits-panel {
+.visits-panel,
+.enrollment-cards,
+.visit-cards,
+.visit-notes,
+.empty-icon {
   display: grid;
   gap: 18px;
 }
@@ -552,12 +485,6 @@ button[type="submit"]:active {
   align-items: flex-start;
 }
 
-.profile-name,
-.enrollment-title,
-.visit-type {
-  color: var(--navy);
-}
-
 .profile-contact,
 .profile-summary,
 .visit-meta {
@@ -573,21 +500,6 @@ button[type="submit"]:active {
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--navy);
-}
-
-.profile-actions,
-.enrollment-cards,
-.visit-cards,
-.visit-notes,
-.empty-icon {
-  display: grid;
-  gap: 14px;
-}
-
-.visit-study,
-.enrollment-protocol {
-  color: var(--muted);
-  font-weight: 600;
 }
 
 /* Detail list */
@@ -615,7 +527,7 @@ button[type="submit"]:active {
   font-weight: 600;
 }
 
-/* Table */
+/* Tables */
 .table-shell {
   overflow-x: auto;
 }
@@ -656,12 +568,9 @@ label,
 .scheduler-form label {
   display: grid;
   gap: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
   color: var(--navy);
-}
-
-label {
-  margin-bottom: 6px;
 }
 
 input,
@@ -677,7 +586,7 @@ textarea,
   background: var(--panel);
   color: var(--text);
   margin-bottom: 8px;
-  transition: border 0.18s, box-shadow 0.18s;
+  transition: border 0.18s ease, box-shadow 0.18s ease;
 }
 
 input:focus,
@@ -686,7 +595,7 @@ textarea:focus,
 .scheduler-form input:focus {
   outline: none;
   border-color: var(--teal);
-  box-shadow: 0 0 0 2px rgba(47, 127, 122, 0.1);
+  box-shadow: 0 0 0 3px rgba(47, 127, 122, 0.12);
 }
 
 .scheduler-form {
@@ -694,19 +603,29 @@ textarea:focus,
   gap: 12px;
 }
 
-.scheduler-form input {
-  padding: 12px 14px;
+/* Inline replacements */
+.button-link-inline {
+  font-size: 1rem;
+  margin-left: 1rem;
 }
 
-/* Responsive */
-@media (max-width: 1100px) {
-  .metric-grid,
-  .card-grid,
-  .content-grid,
-  .day-grid {
-    grid-template-columns: 1fr;
-  }
+.delete-link {
+  color: var(--danger) !important;
+}
 
+.enrollment-row-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.enrollment-edit-link {
+  margin-left: 1em;
+}
+
+/* Responsive design */
+@media (max-width: 1100px) {
   .shell {
     grid-template-columns: 1fr;
   }
@@ -716,6 +635,10 @@ textarea:focus,
     height: auto;
   }
 
+  .metric-grid,
+  .card-grid,
+  .content-grid,
+  .day-grid,
   .profile-summary {
     grid-template-columns: 1fr;
   }
@@ -732,8 +655,30 @@ textarea:focus,
   .study-card-header,
   .profile-header,
   .enrollment-card-header,
-  .visit-card-header {
+  .visit-card-header,
+  .enrollment-row-flex {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-actions,
+  .study-card-actions,
+  .profile-actions {
+    width: 100%;
+  }
+
+  .btn,
+  .button-link,
+  .scheduler-form button,
+  form button,
+  input[type="submit"],
+  button[type="submit"] {
+    width: 100%;
+  }
+
+  .button-link-inline,
+  .enrollment-edit-link {
+    margin-left: 0;
   }
 
   .detail-list {

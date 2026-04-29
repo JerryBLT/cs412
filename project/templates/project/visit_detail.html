@@ -58,6 +58,9 @@
 <section class="panel">
   <div class="panel-header">
     <h3>Source documents</h3>
+    {% if request.user.is_authenticated and request.user.userprofile.role == 'coordinator' %}
+      <a href="{% url 'visit_document_create' visit.id %}" class="button-link" style="float:right;">Upload Document</a>
+    {% endif %}
   </div>
   <div class="chip-row">
     {% for document in documents %}

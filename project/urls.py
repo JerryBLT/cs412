@@ -1,3 +1,4 @@
+
 from django.urls import path
 from .views import *
 from django.contrib.auth import views as auth_views
@@ -5,6 +6,8 @@ from django.views.generic import TemplateView
 
 # URL patterns for all main project views (CRUD + navigation)
 urlpatterns = [
+    # VisitDocument upload
+    path("visits/<int:visit_id>/documents/add/", VisitDocumentCreateView.as_view(), name="visit_document_create"),
     # Homepage and Dashboard
     path("", HomeView.as_view(), name="project_home"),
     path("dashboard/", DashboardView.as_view(), name="project_dashboard"),
@@ -21,6 +24,7 @@ urlpatterns = [
     path("participants/<int:participant_id>/", ParticipantDetailView.as_view(), name="project_participant_detail"),
     path("participants/add/", ParticipantCreateView.as_view(), name="project_participant_add"),
     path("participants/<int:participant_id>/edit/", ParticipantUpdateView.as_view(), name="project_participant_edit"),
+    path("participants/<int:participant_id>/delete/", ParticipantDeleteView.as_view(), name="project_participant_delete"),
 
     # Visit CRUD and calendar
     path("calendar/", VisitCalendarView.as_view(), name="project_visit_calendar"),

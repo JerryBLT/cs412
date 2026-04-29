@@ -7,8 +7,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-
-
 class Study(models.Model):
     """Stores information about a research study."""
     title = models.CharField(max_length=200)  # Study title
@@ -28,8 +26,6 @@ class Study(models.Model):
     def __str__(self):
         """String representation of the Study."""
         return self.title
-
-
 
 class Participant(models.Model):
     """Stores participant information for a study."""
@@ -57,10 +53,29 @@ class Participant(models.Model):
         default='active'
     )
 
+    @property
+    def age_calculated(self):
+        """
+        Calculates the participant's age in years based on their date_of_birth.
+        Returns None if date_of_birth is not set.
+        """
+        from datetime import date
+        if self.date_of_birth:
+            today = date.today()
+            try:
+                birthday = self.date_of_birth.replace(year=today.year)
+            except ValueError:
+                # handle February 29th for leap years
+                birthday = self.date_of_birth.replace(year=today.year, month=self.date_of_birth.month + 1, day=1)
+            age = today.year - self.date_of_birth.year
+            if today < birthday:
+                age -= 1
+            return age
+        return None
+    
     def __str__(self):
         """String representation of the Participant."""
         return f"{self.first_name} {self.last_name}"
-
 
 
 class Enrollment(models.Model):
@@ -86,7 +101,6 @@ class Enrollment(models.Model):
         return f"{self.participant} in {self.study}"
 
 
-
 class Visit(models.Model):
     """Represents a scheduled study visit for an enrollment."""
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)  # Link to enrollment
@@ -110,7 +124,6 @@ class Visit(models.Model):
         return f"{self.visit_type} on {self.visit_date}"
 
 
-# Might Delete this model later!!
 class VisitDocument(models.Model):
     """Stores files or records related to a visit."""
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE)  # Link to visit
@@ -122,6 +135,7 @@ class VisitDocument(models.Model):
         return self.title
 
 class UserProfile(models.Model):
+    '''Extends the built-in User model to include role and participant association.'''
     ROLE_CHOICES = [
         ('coordinator', 'Coordinator'),
         ('participant', 'Participant'),

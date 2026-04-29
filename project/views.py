@@ -1,9 +1,10 @@
+
 from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView, TemplateView, UpdateView, CreateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
-from .models import Enrollment, Participant, Study, Visit
-from .forms import ParticipantForm, EnrollmentForm, VisitForm, StudyForm, ParticipantSelfEditForm
+from .models import Enrollment, Participant, Study, Visit, VisitDocument
+from .forms import ParticipantForm, EnrollmentForm, VisitForm, StudyForm, ParticipantSelfEditForm, VisitDocumentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # ================= Permission Mixins =================
@@ -17,9 +18,33 @@ class ParticipantRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
         return hasattr(self.request.user, 'userprofile') and \
                self.request.user.userprofile.role == 'participant'
 
-
-
 #===================================================================================
+
+# --- VisitDocument Upload ---
+class VisitDocumentCreateView(CoordinatorRequiredMixin, CreateView):
+    model = VisitDocument
+    form_class = VisitDocumentForm
+    template_name = "project/object_form.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.visit = Visit.objects.get(pk=kwargs["visit_id"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.visit = self.visit
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("project_visit_detail", kwargs={"visit_id": self.visit.id})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Upload Visit Document"
+        context["cancel_url"] = reverse("project_visit_detail", kwargs={"visit_id": self.visit.id})
+        context["submit_label"] = "Upload Document"
+        return context
+
+
 # --- CRUD: Study Create ---
 class StudyCreateView(CoordinatorRequiredMixin, CreateView):
     model = Study
