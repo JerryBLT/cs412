@@ -5,7 +5,7 @@
   <div class="panel-header">
     <h3>{{ page_title|default:"Form" }}</h3>
   </div>
-  <form method="post" {% if form_enctype %}enctype="{{ form_enctype }}"{% endif %}>
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">{{ submit_label|default:"Save changes" }}</button>

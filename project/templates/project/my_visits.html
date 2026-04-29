@@ -19,12 +19,21 @@
           {% if visit.notes %}
             <div class="visit-notes"><strong>Notes:</strong> {{ visit.notes }}</div>
           {% endif %}
+          {% if visit.documents.exists %}
+            <div class="visit-documents">
+              <strong>Documents:</strong>
+              <div class="document-chip-row">
+                {% for document in visit.documents %}
+                  <a href="{{ document.file.url }}" target="_blank" class="doc-chip">{{ document.title }}</a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
   {% else %}
     <div class="empty-state">
-      <div class="empty-icon">📅</div>
       <div>No visits scheduled or completed yet.</div>
     </div>
   {% endif %}

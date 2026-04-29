@@ -58,8 +58,7 @@
               <span>{{ enrollment.enrollment_date }}</span>
             </div>
           </a>
-          <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link" style="margin-left: 1em;">Edit Enrollment</a>
-                  <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link enrollment-edit-link">Edit Enrollment</a>
+          <a href="{% url 'project_enrollment_edit' enrollment.id %}" class="button-link enrollment-edit-link">Edit Enrollment</a>
         </div>
       {% empty %}
         <p class="empty-state">This participant is not enrolled in any studies yet.</p>
