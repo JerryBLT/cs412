@@ -1,3 +1,7 @@
+<!-- file: project/templates/project/participant_detail.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/27/2024 -->
+<!-- Description: Template for displaying participant details -->
+
 {% extends "project/base.html" %}
 {% block page_title %}Participant Details{% endblock %}
 
@@ -71,6 +75,7 @@
   <div class="panel-header">
     <h3>Visit timeline</h3>
   </div>
+  <!-- Visit Cards -->
     <div class="stack-list">
       {% for visit in visits %}
         <a class="list-row" href="{% url 'project_visit_detail' visit.id %}">

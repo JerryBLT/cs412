@@ -1,3 +1,6 @@
+<!-- file: project/templates/project/my_visits.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/27/2024 -->
+<!-- Description: Template for displaying a user's visits -->
 {% extends "project/base.html" %}
 {% block page_title %}My Visits{% endblock %}
 
@@ -5,6 +8,7 @@
 <section class="panel visits-panel">
   <h2>My Visits</h2>
   {% if visits %}
+  <!-- Visit Cards -->
     <div class="visit-cards">
       {% for visit in visits %}
         <div class="visit-card">
@@ -16,9 +20,11 @@
           <div class="visit-meta">
             <strong>Date:</strong> {{ visit.visit_date|date:'M j, Y, g:i a' }}
           </div>
+          <!-- Visit Notes -->
           {% if visit.notes %}
             <div class="visit-notes"><strong>Notes:</strong> {{ visit.notes }}</div>
           {% endif %}
+          <!-- Visit Documents -->
           {% if visit.documents.exists %}
             <div class="visit-documents">
               <strong>Documents:</strong>

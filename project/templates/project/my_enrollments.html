@@ -1,3 +1,6 @@
+<!-- file: project/templates/project/my_enrollments.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/27/2024 -->
+<!-- Description: Template for displaying a user's study enrollments -->
 {% extends "project/base.html" %}
 {% block page_title %}My Enrollments{% endblock %}
 
@@ -5,6 +8,7 @@
 <section class="panel enrollments-panel">
   <h2>My Study Enrollments</h2>
   {% if enrollments %}
+  <!-- Enrollment Cards -->
     <div class="enrollment-cards">
       {% for enrollment in enrollments %}
         <div class="enrollment-card">

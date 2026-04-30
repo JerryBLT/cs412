@@ -1,17 +1,24 @@
+<!-- file: project/templates/project/my_profile.html -->
+<!-- Author: Jerry Teixeira (jerrybt@bu.edu), 04/27/2024 -->
+<!-- Description: Template for displaying a user's profile -->
+
 {% extends "project/base.html" %}
 {% block page_title %}My Profile{% endblock %}
 
 {% block content %}
 <section class="panel profile-panel">
+  <!-- Profile Card -->
   <div class="profile-card">
     <div class="profile-header">
       <h2 class="profile-name">{{ participant.first_name }} {{ participant.last_name }}</h2>
       <span class="badge status-badge status-{{ participant.status }}">{{ participant.get_status_display }}</span>
     </div>
+    <!-- Profile Contact Information -->
     <div class="profile-contact">
       <div><strong>Email:</strong> <span>{{ participant.email|default:"—" }}</span></div>
       <div><strong>Phone:</strong> <span>{{ participant.phone|default:"—" }}</span></div>
     </div>
+    <!-- Profile Summary -->
     <div class="profile-summary">
       <div>
         <span class="eyebrow">Enrollments</span>
@@ -22,6 +29,7 @@
         <div class="profile-summary-value">{{ visits_count }}</div>
       </div>
     </div>
+    <!-- Profile Actions -->
     <div class="profile-actions">
       <a href="{% url 'my_profile_edit' %}" class="btn btn-primary">Edit My Profile</a>
     </div>

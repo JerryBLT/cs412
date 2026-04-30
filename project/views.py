@@ -3,11 +3,10 @@ from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView, TemplateView, UpdateView, CreateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
-from .models import Enrollment, Participant, Study, Visit, VisitDocument
+from .models import Enrollment, Participant, Study, Visit, VisitDocument, UserProfile
 from .forms import ParticipantForm, EnrollmentForm, VisitForm, StudyForm, ParticipantSelfEditForm, VisitDocumentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from .models import UserProfile
 
 # ================= Permission Mixins =================
 class CoordinatorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):

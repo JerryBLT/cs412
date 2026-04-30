@@ -1,2 +1,7 @@
-username: jeff_name
-password: 1234567@
+Coordinator: 
+    username: admin
+    password: Fogo123@
+
+participants: 
+    username: emilyc
+    password: 1234567@
